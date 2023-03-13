@@ -5,23 +5,30 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat");
+const fs = require("fs");
+const path = require("path");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
-
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
-
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
-
-  await lock.deployed();
-
-  console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+  const Create2Deployer = await hre.ethers.getContractFactory(
+    "Create2Deployer"
   );
+  const create2Deployer = await Create2Deployer.attach(
+    "0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"
+  );
+
+  const XDeployer = await hre.ethers.getContractFactory("XDeployer");
+  const salt =
+    "0x000000000000000000000000000000000000000000000000000000000000000";
+  console.log("salt", salt);
+
+  await create2Deployer.deploy(0, salt, XDeployer.bytecode);
+  const bytecodehash = hre.ethers.utils.keccak256(XDeployer.bytecode);
+  const address = await create2Deployer.computeAddress(salt, bytecodehash);
+  console.log("address", address);
+
+  const xDeployer = await XDeployer.attach(address);
+  await xDeployer.initialize("0xb0694fecedd88e5590a563adb5f194d2de30f0b6");
+  console.log("xDeployer", xDeployer.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

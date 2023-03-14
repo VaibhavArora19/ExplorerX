@@ -2,17 +2,17 @@ const { Polybase } = require("@polybase/client");
 
 const createDB = () => {
     const db = new Polybase({
-        defaultNamespace: 'checking'
+        defaultNamespace: 'test'
     });
     
     return db;
 }
 
-const createContractRecord = async (id, chains) => {
+const createContractRecord = async (id) => {
 
     const db = createDB();
 
-    const response = await db.collection('Contracts').create([id, chains])
+    const response = await db.collection('Contracts').create([id, [db.collection('Chain').record(id)]])
     
     return response;
 }
@@ -43,12 +43,6 @@ const readChainRecord = async (id) => {
     return response;
 }
 
-// createContractRecord('0x123');
-// readRecord();
+// createContractRecord('0x123').then(data => console.log(data));
+readContractRecord('0x123').then(data => console.log(data.data.chains));
 // createChainRecord('0x123', 'gnosis', '0x123').then(data => console.log(data));
-readChainRecord("0x123").then(res => {
-    console.log(res.data);
-    createContractRecord([res.data]).then(response => {
-        console.log('response is', response);
-    })
-});

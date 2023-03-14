@@ -3,7 +3,7 @@ const { Polybase } = require("@polybase/client");
 const createSchema = async () => {
 
 const db = new Polybase({
-    defaultNamespace: 'checking'
+    defaultNamespace: 'test'
 });
 
 const createResponse = await db.applySchema(`
@@ -23,14 +23,14 @@ const createResponse = await db.applySchema(`
         }
     }
 
-
+    @public
     collection Contracts {
         id: string;
         chains?: Chain[];
 
         @index(id);
 
-    constructor(id: string, chains: Chains[]) {
+    constructor(id: string, chains: Chain[]) {
         this.id = id;
         this.chains = chains;
         

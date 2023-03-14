@@ -1,5 +1,8 @@
 const { Polybase } = require("@polybase/client");
 
+//There is still a problem with polybase when user will deploy to multiple chains he will get multiple addresses
+//then he will send all of the id of the chains record to createContractReecord function and then 
+//we need to call the record function and then we will pass all of those records, to the Contracts collection
 const createDB = () => {
     const db = new Polybase({
         defaultNamespace: 'test'

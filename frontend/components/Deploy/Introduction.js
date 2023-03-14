@@ -53,13 +53,18 @@ const data = [
     },
 ]
 
-const Introduction = () => {
+const Introduction = ({setPage, page}) => {
+
+    const nextPageHandler = () => {
+        setPage((currPage) => currPage + 1)
+    }
+    
   return (
     <div className='bg-[#1E1E1E]  rounded-2xl w-[500px] border-gray-700 border px-10 py-8'>
         <h2 className='text-lg font-semibold text-white'>Deploy Smartcontracts</h2>
         {data.map(item => <Helper key={item.id} img={item.img} title={item.title} subtitle={item.subtitle} />)}
 
-        <button className='py-3 w-full bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800'>Get Started</button>
+        <button onClick={nextPageHandler} className='py-3 w-full bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800'>Get Started</button>
     </div>
   )
 }

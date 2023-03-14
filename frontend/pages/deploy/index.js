@@ -1,14 +1,41 @@
 import ContractDetails from '@/components/Deploy/ContractDetails'
+import DeployContract from '@/components/Deploy/DeployContract'
 import Introduction from '@/components/Deploy/Introduction'
 import SelectChain from '@/components/Deploy/SelectChain'
-import React from 'react'
+import React, { useState } from 'react'
 
 const index = () => {
+
+  const [page, setPage] = useState(0)
+  const [formData, setFormData] = useState({
+    contractName : '',
+    contractDescription: '',
+    currentDeployChain: '',
+    multichains: [''],
+    contractPasted: ''
+  })
+
+
+  const steps = ['Basic Details', 'Choose Chain', 'Multichain', 'Deploy']
+
+  const PageDisplay = () => {
+    if(page === 0){
+      return <Introduction setPage={setPage} page={page} />
+    }
+    else if(page === 1){
+      return <ContractDetails setPage={setPage} page={page} formData={formData} setFormData={setFormData}/>
+    }
+    else if(page === 2){
+      return <SelectChain setPage={setPage} page={page} formData={formData} setFormData={setFormData}/>
+    }
+    else if(page === 3){
+      return <DeployContract setPage={setPage} page={page} formData={formData} setFormData={setFormData}/>
+    }
+  }
+
   return (
     <div className='bg-[#171717] h-screen flex items-center justify-center'>
-        {/* <Introduction/> */}
-        {/* <ContractDetails/> */}
-        <SelectChain/>
+        <>{PageDisplay()}</>
     </div>
   )
 }

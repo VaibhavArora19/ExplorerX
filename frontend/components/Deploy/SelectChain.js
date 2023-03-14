@@ -4,7 +4,7 @@ import {GiBreakingChain} from 'react-icons/gi'
 import { MdKeyboardArrowUp, MdKeyboardArrowDown} from 'react-icons/md'
 import polygonSvg from '../../public/assets/deploy/polygon.svg'
 
-const SelectChain = () => {
+const SelectChain = ({setPage, page}) => {
     const [isMultichain, setIsMultichain] = useState(false)
     const [isSinlgeChain, setIsSingleChain] = useState(false)
 
@@ -18,6 +18,14 @@ const SelectChain = () => {
         setIsMultichain(false)
         setIsSingleChain(true) 
     }
+
+    const nextPageHandler = () => {
+        setPage((currPage) => currPage + 1)
+      }
+    
+      const previousPageHandler = () => {
+        setPage((currPage) => currPage - 1)
+      }
 
   return (
     <div className='text-white w-[550px] bg-[#1E1E1E] py-10 px-10 rounded-2xl border border-gray-700'>
@@ -57,8 +65,8 @@ const SelectChain = () => {
 
 
             <div className='flex justify-between mt-6'>
-                <button type='button' className='py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600'>Back</button>
-                <button type='button' className='py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600'>Next</button>
+                <button onClick={previousPageHandler} type='button' className='py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600'>Back</button>
+                <button onClick={nextPageHandler} type='button' className='py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600'>Next</button>
             </div>
         </form>
     </div>

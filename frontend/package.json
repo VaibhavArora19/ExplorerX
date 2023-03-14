@@ -11,11 +11,15 @@
   "dependencies": {
     "@next/font": "13.2.4",
     "@polybase/client": "^0.3.32",
+    "autoprefixer": "^10.4.14",
     "dotenv": "^16.0.3",
     "ethers": "^6.1.0",
     "next": "13.2.4",
+    "postcss": "^8.4.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "solc": "^0.8.19"
+    "react-icons": "^4.8.0",
+    "solc": "^0.8.19",
+    "tailwindcss": "^3.2.7"
   }
 }

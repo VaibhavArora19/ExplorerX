@@ -1,58 +1,44 @@
-// import { Polybase } from "@polybase/client";
 const { Polybase } = require("@polybase/client");
 
 const createSchema = async () => {
 
 const db = new Polybase({
-    defaultNamespace: 'contracts'
+    defaultNamespace: 'checking'
 });
 
 const createResponse = await db.applySchema(`
     @public
+    collection Chain {
+        id: string;
+        name: string;
+        address: string;
+        
+        @index(id);
+
+    constructor(id: string, name: string, address: string) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        
+        }
+    }
+
+
     collection Contracts {
         id: string;
-        chains?:
-            {
-                name: string;
-                address: string;
-            };
-        transactions?:
-            {
-            method: string;
-            txHash: string;
-            block: number;    
-        };
+        chains?: Chain[];
 
-    @index(id);
+        @index(id);
 
-    constructor(id: string) {
+    constructor(id: string, chains: Chains[]) {
         this.id = id;
-    }
+        this.chains = chains;
+        
+        }
     }
 `);
 
 console.log('response ', createResponse);
 };
 
-
-
-const addRecord = async () => {
-    const db = new Polybase({
-        defaultNamespace: 'contracts'
-    });
-    
-    const response = await db.collection('Contracts').create(['12'])
-    console.log(response);
-}
-
-const readRecord = async () => {
-    const db = new Polybase({
-        defaultNamespace: 'contracts'
-    });
-    const data = await db.collection("Contracts").record("12").get();
-    console.log(data);
-};
-
-// addRecord();
-// createSchema();
-readRecord();
+createSchema();

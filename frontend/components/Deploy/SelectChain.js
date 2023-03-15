@@ -81,7 +81,7 @@ const SelectChain = ({setPage, page, formData, setFormData}) => {
                 </div>
             </div>
 
-            <p className='text-sm text-gray-400 mb-2'>Chain type</p>
+            <p className='text-sm text-gray-400 mb-2'>Deploy type</p>
 
             <div className='flex gap-4'>
                 <div onClick={singleChainHandler} className={` ${isSinlgeChain ? 'bg-[#22335F]': 'bg-[#363636]'}  p-10 rounded-xl flex-[0.5] cursor-pointer`}>

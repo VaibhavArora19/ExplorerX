@@ -1,6 +1,8 @@
+import ChainModal from '@/components/Deploy/ChainModal'
 import ContractDetails from '@/components/Deploy/ContractDetails'
 import DeployContract from '@/components/Deploy/DeployContract'
 import Introduction from '@/components/Deploy/Introduction'
+import MultiChain from '@/components/Deploy/MultiChain'
 import SelectChain from '@/components/Deploy/SelectChain'
 import React, { useState } from 'react'
 
@@ -11,7 +13,7 @@ const index = () => {
     contractName : '',
     contractDescription: '',
     currentDeployChain: '',
-    multichains: [''],
+    multichains: [],
     contractPasted: ''
   })
 
@@ -29,6 +31,9 @@ const index = () => {
       return <SelectChain setPage={setPage} page={page} formData={formData} setFormData={setFormData}/>
     }
     else if(page === 3){
+      return <MultiChain setPage={setPage} page={page} formData={formData} setFormData={setFormData} />
+    }
+    else if(page === 4){
       return <DeployContract setPage={setPage} page={page} formData={formData} setFormData={setFormData}/>
     }
   }

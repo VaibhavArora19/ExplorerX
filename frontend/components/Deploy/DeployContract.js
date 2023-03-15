@@ -31,7 +31,7 @@ const DeployContract = ({setPage, page, formData, setFormData}) => {
     setIsUsingRelayer(!isUsingRelayer)
   }
   return (
-    <div className='text-white w-[850px] bg-[#1E1E1E] flex flex-col py-10 px-10 rounded-2xl border border-gray-700'>
+    <div className='text-white w-[800px] bg-[#1E1E1E] flex flex-col p-7 pt-10 rounded-2xl border border-gray-700'>
         <h2 className='text-lg font-semibold text-white mb-5'>Deploy Smart Contract</h2>
 
         <textarea 
@@ -41,7 +41,7 @@ const DeployContract = ({setPage, page, formData, setFormData}) => {
           value={formData.contractPasted}
           rows={20} 
           placeholder='Paste your contract here!'  
-          className='bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none min-h-[450px] max-h-[550px' 
+          className='bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none min-h-[300px] max-h-[350px]' 
         />
 
         <p className='text-sm mt-6 mb-2 text-gray-300'>Select the below button to deploy using Relayer</p>

@@ -1,17 +1,18 @@
-const { Polybase } = require("@polybase/client");
+// const { Polybase } = require("@polybase/client");
+import { Polybase } from "@polybase/client";
 
 //There is still a problem with polybase when user will deploy to multiple chains he will get multiple addresses
 //then he will send all of the id of the chains record to createContractReecord function and then 
 //we need to call the record function and then we will pass all of those records, to the Contracts collection
-const createDB = () => {
+export const createDB = () => {
     const db = new Polybase({
-        defaultNamespace: 'test'
+        defaultNamespace: 'polybaseTest'
     });
     
     return db;
 }
 
-const createContractRecord = async (id) => {
+export const createContractRecord = async (id) => {
 
     const db = createDB();
 
@@ -28,16 +29,16 @@ const readContractRecord = async (id) => {
     return data;
 };
 
-const createChainRecord = async (id, name, contractAddress) => {
+export const createChainRecord = async (id, contractId, name, contractAddress) => {
 
     const db = createDB();
 
-    const response = await db.collection('Chain').create([id, name, contractAddress]);
+    const response = await db.collection('Chain').create([id, contractId, name, contractAddress]);
 
     return response;
 }
 
-const readChainRecord = async (id) => {
+export const readChainRecord = async (id) => {
 
     const db = createDB();
 
@@ -47,5 +48,5 @@ const readChainRecord = async (id) => {
 }
 
 // createContractRecord('0x123').then(data => console.log(data));
-readContractRecord('0x123').then(data => console.log(data.data.chains));
+// readContractRecord('0x123').then(data => console.log(data.data.chains));
 // createChainRecord('0x123', 'gnosis', '0x123').then(data => console.log(data));

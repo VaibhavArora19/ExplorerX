@@ -22,9 +22,8 @@ export const compile = async (contract) => {
   const abi = output.contracts["newContract.sol"].Test.abi;
   const bytecode = output.contracts["newContract.sol"].Test.evm.bytecode;
 
-  deploy(abi, bytecode);
+  console.log(abi, bytecode);
 };
-
 
 async function deploy(abi, bytecode) {
   const provider = new ethers.JsonRpcProvider(process.env.MUMBAI_URL);

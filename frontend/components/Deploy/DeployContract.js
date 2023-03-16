@@ -69,7 +69,7 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
           initializable ? "bg-[#22335F] text-blue-300" : "bg-[#363636]"
         } `}
       >
-        initialize
+        Initialize
       </div>
 
       <button

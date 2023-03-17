@@ -5,6 +5,41 @@ export const connextDomains = {
   Mumbai: 9991,
 };
 export const optimisticVerificationContract = '0x793937C933Ef636cA18532Ec4152D2eb54df2c71'; //goerli
+export const optimisticVerificationABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_ancillaryData",
+				"type": "string"
+			}
+		],
+		"name": "requestData",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "settleRequest",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getSettledData",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
 export const abi = [
   {
     anonymous: false,

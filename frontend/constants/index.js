@@ -4,7 +4,7 @@ export const connextDomains = {
   "Optimism-Goerli": 1735356532,
   Mumbai: 9991,
 };
-export const optimisticVerificationContract = '0xD56CEB5E8319DaB3066A7aF885E52829E6e2948e'; //goerli
+export const optimisticVerificationContract = '0x793937C933Ef636cA18532Ec4152D2eb54df2c71'; //goerli
 export const abi = [
   {
     anonymous: false,

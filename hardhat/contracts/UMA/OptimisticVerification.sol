@@ -17,12 +17,11 @@ contract OO_GettingStarted {
 
     bytes ancillaryData;
     // Submit a data request to the Optimistic oracle.
-    function requestData(address[] memory contractAddresses) public {
+    function requestData(string memory _ancillaryData) public {
     
     // Post the question in ancillary data. Note that this is a simplified form of ancillry data to work as an example. A real
     // world prodition market would use something slightly more complex and would need to conform to a more robust structure.
-    ancillaryData =
-        abi.encodePacked("Are all the contract addresses share the same source code?", contractAddresses);
+    ancillaryData = bytes(_ancillaryData);
         
         requestTime = block.timestamp; // Set the request time to the current block time.
         IERC20 bondCurrency = IERC20(0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6); // Use Görli WETH as the bond currency.

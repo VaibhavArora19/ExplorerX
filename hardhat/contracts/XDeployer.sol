@@ -5,9 +5,9 @@ import {IXReceiver} from "@connext/smart-contracts/contracts/core/connext/interf
 import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract XDeployer is IXReceiver,Initializable {
+contract XDeployer is IXReceiver, Initializable {
     // Interface for the connext xcall function
-    IConnext public  connext;
+    IConnext public connext;
 
     // This function is used to initialize the variables
     function initialize(address _connext) public initializer {
@@ -15,7 +15,7 @@ contract XDeployer is IXReceiver,Initializable {
     }
 
     // This function is used to deploy the contract across multiple chains
-    // @param target - the address of the target contract 
+    // @param target - the address of the target contract
     // @param destinationDomain - a array of the destination chain IDs
     // @param salt - the salt used to create the contract address
     // @param bytecode - the bytecode of the contract
@@ -38,8 +38,13 @@ contract XDeployer is IXReceiver,Initializable {
         if (destinationDomain.length != relayerFee.length) {
             revert("destinationDomain and relayerFee must be the same length");
         }
-        deployContract(salt, bytecode, initializable,initializeData);
-        bytes memory callData = abi.encode(salt, bytecode, initializable,initializeData);
+        deployContract(salt, bytecode, initializable, initializeData);
+        bytes memory callData = abi.encode(
+            salt,
+            bytecode,
+            initializable,
+            initializeData
+        );
         for (uint i = 0; i < destinationDomain.length; i++) {
             connext.xcall{value: relayerFee[i]}(
                 destinationDomain[i], // _destination: Domain ID of the destination chain
@@ -57,19 +62,21 @@ contract XDeployer is IXReceiver,Initializable {
     // @param _callData - the encoded calldata to send
     // @return bytes - the encoded return data
     function xReceive(
-        bytes32 ,
-        uint256 ,
+        bytes32,
+        uint256,
         address,
-        address ,
+        address,
         uint32,
         bytes memory _callData
     ) external returns (bytes memory) {
         // Unpack the _callData
-        (bytes32 salt, bytes memory bytecode, bool initializable,bytes memory initializeData) = abi.decode(
-            _callData,
-            (bytes32, bytes, bool,bytes)
-        );
-        deployContract(salt, bytecode, initializable,initializeData);
+        (
+            bytes32 salt,
+            bytes memory bytecode,
+            bool initializable,
+            bytes memory initializeData
+        ) = abi.decode(_callData, (bytes32, bytes, bool, bytes));
+        deployContract(salt, bytecode, initializable, initializeData);
     }
 
     // This function is used to deploy and initialize a contract
@@ -78,7 +85,7 @@ contract XDeployer is IXReceiver,Initializable {
     // @param initializable - whether the contract is initializable
     // @param initializeData - the data used to initialize the contract
     // @return address - the address of the deployed contract
-    function deployContract (
+    function deployContract(
         bytes32 salt,
         bytes memory bytecode,
         bool initializable,
@@ -103,7 +110,8 @@ contract XDeployer is IXReceiver,Initializable {
     ) public returns (address) {
         return Create2.deploy(0, salt, bytecode);
     }
-    // This function is used to compute the address of the contract that will be deployed 
+
+    // This function is used to compute the address of the contract that will be deployed
     // @param salt - the salt used to generate the address
     // @param bytecode - the bytecode of the contract
     // @return address - the computed address of the contract that will be deployed

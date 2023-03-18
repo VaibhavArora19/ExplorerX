@@ -2,11 +2,12 @@ import AddressComp from '@/components/Address/Address'
 import Detail from '@/components/Address/DetailItem'
 import Details from '@/components/Address/Details'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Highlight from 'react-highlight'
 import styles from '../../node_modules/highlight.js/styles/railscasts.css'
 import {optimisticVerificationABI} from '../../constants/index'
 import { MdFileCopy } from 'react-icons/md'
+import { readChainRecord, readContractRecord } from "../../polybase/queries";
 
 
 const CONTRACT_DATA = [
@@ -53,7 +54,59 @@ const Address = () => {
     const [showWrite, setShowWrite] = useState(false)
     const [showRead, setShowRead] = useState(false)
     const [showAbi, setShowAbi] = useState(false)
+    const [contractData, setContractData] = useState([]);
+    const [alternateContracts, setAlternateContract] = useState([]);
+    
+    //useEffect will fetch the contract from polybase using the contract address
+    useEffect(() => {
 
+      if(address) {
+
+        (async function() {
+          //get the data of the current address first
+          const chainRecord = await readChainRecord(address);
+
+          //then call the function to get the reference of all the alternate contracts
+          const contractRecord = await readContractRecord(chainRecord?.data?.contractId);
+
+          let otherChains = [];
+          if(contractRecord) {
+
+            //then get data of each contract from their reference
+            for(let otherChain of contractRecord?.data?.chains) {
+              let singleChainData = await readChainRecord(otherChain?.id);
+              otherChains.push({title: singleChainData?.data?.name, value: singleChainData?.data?.address});
+            }
+
+          } 
+
+          const data = [
+            {
+              title: 'Name',
+              value: 'Pool Contract'
+            },
+            {
+              title: 'Description',
+              value: 'A random description for pool for testing to check if every component is working fine or not! Hello hey hola comoestas '
+            },{
+              title: 'Owner',
+              value: '0x51EEBc7765b246a4D16d02b28CEAC61299AB7d9d'
+            },{
+              title: 'Current Chain',
+              value: chainRecord?.data?.name
+            },{
+              title: 'Balance',
+              value: '$102.34'
+            },
+          ];
+
+
+          setContractData(data);
+          setAlternateContract(otherChains);
+        })();
+        
+      }
+    }, [address]);
     const showReadHandler = () => {
       setShowCode(false)
       setShowWrite(false)
@@ -82,7 +135,6 @@ const Address = () => {
       setShowAbi(true)
     }
 
-    console.log(optimisticVerificationABI)
     const AbiToString = JSON.stringify(optimisticVerificationABI)
 
   return (
@@ -90,8 +142,8 @@ const Address = () => {
         <AddressComp address={address}  />
 
       <div className='flex mx-8 gap-3 mt-4'>
-        <Details data={CONTRACT_DATA} heading='Contract details' />
-        <Details data={OTHER_CHAINS} heading='Other chains' isAddress={true} />
+        {contractData.length > 0 && <Details data={contractData} heading='Contract details' />}
+        {alternateContracts.length > 0 && <Details data={alternateContracts} heading='Other chains' isAddress={true} />}
       </div>
 
       <div className= 'bg-[#171717] py-4 px-3 mx-8 mt-4 rounded-md'>

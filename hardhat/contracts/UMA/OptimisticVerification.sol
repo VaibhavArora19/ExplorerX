@@ -2,13 +2,12 @@
 
 pragma solidity ^0.8.14;
 
-import "https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/optimistic-oracle-v2/interfaces/OptimisticOracleV2Interface.sol";
-
+import "@uma/core/contracts/optimistic-oracle-v2/interfaces/OptimisticOracleV2Interface.sol";
 
 contract OO_GettingStarted {
-    
     // Create an Optimistic oracle instance at the deployed address on Görli.
-    OptimisticOracleV2Interface oo = OptimisticOracleV2Interface(0xA5B9d8a0B0Fa04Ba71BDD68069661ED5C0848884);
+    OptimisticOracleV2Interface oo =
+        OptimisticOracleV2Interface(0xA5B9d8a0B0Fa04Ba71BDD68069661ED5C0848884);
 
     // Use the yes no idetifier to ask arbitary questions, such as the weather on a particular day.
     bytes32 identifier = bytes32("YES_OR_NO_QUERY");
@@ -16,19 +15,27 @@ contract OO_GettingStarted {
     uint256 requestTime = 0; // Store the request time so we can re-use it later.
 
     bytes ancillaryData;
+
     // Submit a data request to the Optimistic oracle.
     function requestData(string memory _ancillaryData) public {
-    
-    // Post the question in ancillary data. Note that this is a simplified form of ancillry data to work as an example. A real
-    // world prodition market would use something slightly more complex and would need to conform to a more robust structure.
-    ancillaryData = bytes(_ancillaryData);
-        
+        // Post the question in ancillary data. Note that this is a simplified form of ancillry data to work as an example. A real
+        // world prodition market would use something slightly more complex and would need to conform to a more robust structure.
+        ancillaryData = bytes(_ancillaryData);
+
         requestTime = block.timestamp; // Set the request time to the current block time.
-        IERC20 bondCurrency = IERC20(0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6); // Use Görli WETH as the bond currency.
+        IERC20 bondCurrency = IERC20(
+            0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6
+        ); // Use Görli WETH as the bond currency.
         uint256 reward = 0;
 
         // Now, make the price request to the Optimistic oracle and set the liveness to 5 days so it will settle quickly.
-        oo.requestPrice(identifier, requestTime, ancillaryData, bondCurrency, reward);
+        oo.requestPrice(
+            identifier,
+            requestTime,
+            ancillaryData,
+            bondCurrency,
+            reward
+        );
         oo.setCustomLiveness(identifier, requestTime, ancillaryData, 5 days);
     }
 
@@ -39,6 +46,14 @@ contract OO_GettingStarted {
 
     // Fetch the resolved value from the Optimistic Oracle that was settled.
     function getSettledData() public view returns (int256) {
-        return oo.getRequest(address(this), identifier, requestTime, ancillaryData).resolvedPrice;
+        return
+            oo
+                .getRequest(
+                    address(this),
+                    identifier,
+                    requestTime,
+                    ancillaryData
+                )
+                .resolvedPrice;
     }
 }

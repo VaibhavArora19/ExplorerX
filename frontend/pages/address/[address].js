@@ -4,11 +4,10 @@ import Details from '@/components/Address/Details'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import Highlight from 'react-highlight'
-//ir black
-// stackoverflow dark
-// srcery
-// railscasts
 import styles from '../../node_modules/highlight.js/styles/railscasts.css'
+import {optimisticVerificationABI} from '../../constants/index'
+import { MdFileCopy } from 'react-icons/md'
+
 
 const CONTRACT_DATA = [
   {
@@ -33,15 +32,15 @@ const CONTRACT_DATA = [
 const OTHER_CHAINS = [
   {
     title: 'Polygon',
-    value: '0x51EEBc7765b246a4D16d02b28CEAC61299AB7d9d'
+    value: '0xE78419ae90e7CE4D9884b5001A4DE0491A32ad09'
   },
   {
     title: 'Optimism',
-    value: '0x51EEBc7765b246a4D16d02b28CEAC61299AB7d9d'
+    value: '0x12e56bCD9Fb726574BAdA826594bfdFeBD9f4304'
   },
   {
     title: 'Mantle',
-    value: '0x51EEBc7765b246a4D16d02b28CEAC61299AB7d9d'
+    value: '0xf2E01c4761EfeD1BD61F5e2933220D6eD07a2682'
   },
 ]
 
@@ -53,24 +52,38 @@ const Address = () => {
     const [showCode, setShowCode] = useState(true)
     const [showWrite, setShowWrite] = useState(false)
     const [showRead, setShowRead] = useState(false)
+    const [showAbi, setShowAbi] = useState(false)
 
     const showReadHandler = () => {
       setShowCode(false)
       setShowWrite(false)
+      setShowAbi(false)
       setShowRead(true)
     }
 
     const showWriteHandler = () => {
       setShowCode(false)
       setShowRead(false)
+      setShowAbi(false)
       setShowWrite(true)
     }
 
     const showCodeHandler = () => {
       setShowRead(false)
+      setShowAbi(false)
       setShowWrite(false)
       setShowCode(true)
     }
+
+    const showAbiHandler = () => {
+      setShowCode(false)
+      setShowRead(false)
+      setShowWrite(false)
+      setShowAbi(true)
+    }
+
+    console.log(optimisticVerificationABI)
+    const AbiToString = JSON.stringify(optimisticVerificationABI)
 
   return (
     <section className='bg-[#111111] h-screen py-4'>
@@ -78,7 +91,7 @@ const Address = () => {
 
       <div className='flex mx-8 gap-3 mt-4'>
         <Details data={CONTRACT_DATA} heading='Contract details' />
-        <Details data={OTHER_CHAINS} heading='Other chains' />
+        <Details data={OTHER_CHAINS} heading='Other chains' isAddress={true} />
       </div>
 
       <div className= 'bg-[#171717] py-4 px-3 mx-8 mt-4 rounded-md'>
@@ -88,6 +101,8 @@ const Address = () => {
           <p onClick={showReadHandler} className={`w-[100px] text-center py-2 rounded-md ${showRead ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'}   text-white cursor-pointer`}>Read</p>
           <p onClick={showWriteHandler} className={`w-[100px] text-center py-2 rounded-md ${showWrite ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'} text-white cursor-pointer`}>Write</p>
           <p onClick={showCodeHandler} className={`w-[100px] text-center py-2 rounded-md ${showCode ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'} text-white cursor-pointer`}>Code</p>
+          <p onClick={showAbiHandler} className={`w-[100px] text-center py-2 rounded-md ${showAbi ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'} text-white cursor-pointer`}>ABI</p>
+
         </div>
 
 
@@ -111,6 +126,14 @@ const Address = () => {
 
         
         {showWrite && <p>Write</p>}
+
+        {showAbi && (
+          <div className='mt-4 px-3 py-6 relative rounded-md bg-[#1c1c1c] text-[#666667] leading-8'>
+            <p>{AbiToString}</p>
+            <MdFileCopy size={25} className='absolute right-4 top-4 cursor-pointer hover:text-gray-200'/>
+
+          </div>
+        )}
 
 
         {/* React Syntax Highlighter */}

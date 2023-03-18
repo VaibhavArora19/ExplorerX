@@ -101,8 +101,8 @@ const SelectChain = ({setPage, page, formData, setFormData}) => {
 
 
             <div className='flex justify-between mt-6'>
-                <button onClick={previousPageHandler} type='button' className='py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600'>Back</button>
-                <button onClick={nextPageHandler} type='button' className='py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600'>Next</button>
+                <button onClick={previousPageHandler} type='button' className='py-3 px-7 rounded-md bg-[#161616] hover:bg-[#111111] text-gray-300 border border-gray-600'>Back</button>
+                <button onClick={nextPageHandler} type='button' className='py-3 px-7 rounded-md bg-[#161616] hover:bg-[#111111] text-gray-300 border border-gray-600'>Next</button>
             </div>
         </form>
         

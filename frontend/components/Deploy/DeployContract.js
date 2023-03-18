@@ -74,7 +74,7 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
 
       <button
         onClick={deployContractHandler}
-        className="py-3 bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800"
+        className="py-3 bg-[#161616] hover:bg-[#111111] mt-4 border-gray-700 border text-white rounded-xl mt-"
       >
         Deploy
       </button>

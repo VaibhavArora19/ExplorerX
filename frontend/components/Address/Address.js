@@ -8,7 +8,7 @@ const AddressComp = ({address}) => {
           <Image src='/assets/deploy/fvm.png' height={30} width={30} className='rounded-md' alt='random-img' />
           <h2 className='text-xl font-semibold text-[#A3A7B3]'>Address</h2>
           <p className='text-[#78787a]'>{address}</p>
-          <MdFileCopy size={20} className='text-[#78787a] cursor-pointer' />
+          <MdFileCopy size={20} className='text-[#78787a] cursor-pointer hover:text-gray-200' />
     </div>
   )
 }

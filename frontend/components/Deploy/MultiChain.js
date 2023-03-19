@@ -6,6 +6,8 @@ import scrollImg from "../../public/assets/deploy/scrollImg.png";
 import zksyncImg from "../../public/assets/deploy/ZKsyncImg.png";
 import optimismImg from "../../public/assets/deploy/optimism.png";
 import fvmImg from "../../public/assets/deploy/fvm.png";
+import mantleImg from "../../public/assets/deploy/mantle.png";
+
 
 const chains = [
   {
@@ -46,7 +48,7 @@ const chains = [
   },
   {
     id: "c7",
-    chainImg: polygonSvg,
+    chainImg: mantleImg,
     chainName: "Mantle",
     chainAdd: "0xq090190310zja8q9409qe2420",
   },

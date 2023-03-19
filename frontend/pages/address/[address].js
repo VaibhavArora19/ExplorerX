@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { optimisticVerificationABI } from '../../constants/index';
 import Code from '@/components/Address/Code';
 import ABIComp from '@/components/Address/ABIComp';
 import ReadAll from '@/components/Read/ReadAll';
@@ -8,6 +7,7 @@ import WriteAll from '@/components/Write/WriteAll';
 import AddressComp from '@/components/Address/Address';
 import Details from '@/components/Address/Details';
 import { readChainRecord, readContractRecord } from '../../polybase/queries';
+import Loader from '@/components/Loader/Loader';
 
 const CONTRACT_DATA = [
   {
@@ -64,11 +64,13 @@ const Address = () => {
   const [contractData, setContractData] = useState([]);
   const [alternateContracts, setAlternateContract] = useState([]);
   const [contractInformation, setContractInformation] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   //useEffect will fetch the contract from polybase using the contract address
   useEffect(() => {
     if (address) {
       (async function () {
+        setIsLoading(true);
         //get the data of the current address first
         const chainRecord = await readChainRecord(address);
 
@@ -76,7 +78,7 @@ const Address = () => {
         const contractRecord = await readContractRecord(
           chainRecord?.data?.contractId
         );
-          
+
         let otherChains = [];
         if (contractRecord) {
           //then get data of each contract from their reference
@@ -96,8 +98,7 @@ const Address = () => {
           },
           {
             title: 'Description',
-            value:
-              contractRecord?.data?.description,
+            value: contractRecord?.data?.description,
           },
           {
             title: 'Owner',
@@ -116,10 +117,10 @@ const Address = () => {
         setContractData(data);
         setAlternateContract(otherChains);
         setContractInformation(contractRecord);
+        setIsLoading(false);
       })();
     }
   }, [address]);
-
 
   const showReadHandler = () => {
     setShowCode(false);
@@ -149,74 +150,85 @@ const Address = () => {
     setShowAbi(true);
   };
 
-  // console.log(optimisticVerificationABI);
-  const AbiToString = JSON.stringify(optimisticVerificationABI);
-
   return (
     <section className="bg-[#111111] min-h-screen py-4">
-      <AddressComp address={address} />
+      {isLoading ? (
+        <Loader/>
+      ) : (
+        <>
+          <AddressComp address={address} />
 
-      <div className="flex mx-8 gap-3 mt-4">
-        {contractData.length > 0 && (
-          <Details
-            data={contractData}
-            heading="Contract details"
-          />
-        )}
-        {alternateContracts.length > 0 && (
-          <Details
-            data={alternateContracts}
-            heading="Other chains"
-            isAddress={true}
-          />
-        )}
-      </div>
+          <div className="flex mx-8 gap-3 mt-4">
+            {contractData.length > 0 && (
+              <Details
+                data={contractData}
+                heading="Contract details"
+              />
+            )}
+            {alternateContracts.length > 0 && (
+              <Details
+                data={alternateContracts}
+                heading="Other chains"
+                isAddress={true}
+              />
+            )}
+          </div>
 
-      <div className="bg-[#171717] py-4 px-3 mx-8 mt-4 rounded-md">
-        {/* Buttons */}
-        <div className="flex gap-4">
-          <p
-            onClick={showReadHandler}
-            className={`w-[100px] text-center py-2 rounded-md ${
-              showRead ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
-            }   text-white cursor-pointer`}
-          >
-            Read
-          </p>
-          <p
-            onClick={showWriteHandler}
-            className={`w-[100px] text-center py-2 rounded-md ${
-              showWrite ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
-            } text-white cursor-pointer`}
-          >
-            Write
-          </p>
-          <p
-            onClick={showCodeHandler}
-            className={`w-[100px] text-center py-2 rounded-md ${
-              showCode ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
-            } text-white cursor-pointer`}
-          >
-            Code
-          </p>
-          <p
-            onClick={showAbiHandler}
-            className={`w-[100px] text-center py-2 rounded-md ${
-              showAbi ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
-            } text-white cursor-pointer`}
-          >
-            ABI
-          </p>
-        </div>
+          <div className="bg-[#171717] py-4 px-3 mx-8 mt-4 rounded-md">
+            {/* Buttons */}
+            <div className="flex gap-4">
+              <p
+                onClick={showReadHandler}
+                className={`w-[100px] text-center py-2 rounded-md ${
+                  showRead ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
+                }   text-white cursor-pointer`}
+              >
+                Read
+              </p>
+              <p
+                onClick={showWriteHandler}
+                className={`w-[100px] text-center py-2 rounded-md ${
+                  showWrite ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
+                } text-white cursor-pointer`}
+              >
+                Write
+              </p>
+              <p
+                onClick={showCodeHandler}
+                className={`w-[100px] text-center py-2 rounded-md ${
+                  showCode ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
+                } text-white cursor-pointer`}
+              >
+                Code
+              </p>
+              <p
+                onClick={showAbiHandler}
+                className={`w-[100px] text-center py-2 rounded-md ${
+                  showAbi ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
+                } text-white cursor-pointer`}
+              >
+                ABI
+              </p>
+            </div>
 
-        {(showCode && contractInformation) && <Code code={contractInformation?.data?.contractCode}/>}
+            {showCode && contractInformation && (
+              <Code code={contractInformation?.data?.contractCode} />
+            )}
 
-        {(showRead && contractInformation) && <ReadAll abi={contractInformation?.data?.abi}/>}
+            {showRead && contractInformation && (
+              <ReadAll abi={contractInformation?.data?.abi} />
+            )}
 
-        {(showWrite && contractInformation) && <WriteAll abi={contractInformation?.data?.abi}/>}
+            {showWrite && contractInformation && (
+              <WriteAll abi={contractInformation?.data?.abi} />
+            )}
 
-        {(showAbi && contractInformation) && <ABIComp AbiToString={contractInformation?.data?.abi} />}
-      </div>
+            {showAbi && contractInformation && (
+              <ABIComp AbiToString={contractInformation?.data?.abi} />
+            )}
+          </div>
+        </>
+      )}
     </section>
   );
 };

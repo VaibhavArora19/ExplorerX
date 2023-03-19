@@ -17,6 +17,9 @@ const WriteAll = ({abi}) => {
 
   return (
     <div>
+
+      {!writeArr.length && <p className='text-white text-sm text-center py-20'>No Write methods available!</p>}
+
       {writeArr.map((item, i) => (
         <>
           <WriteItem functionName={item.name} i={i} inputs={item.inputs} />

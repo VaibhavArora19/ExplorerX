@@ -21,6 +21,9 @@ const ReadAll = ({abi}) => {
 
   return (
     <div>
+
+      {!nonInputArr.length && !inputArr.length && <p className='text-white text-sm text-center py-20'>No read methods available!</p>}
+
       {nonInputArr.map((item, i) => (
         <>
           <ReadItem

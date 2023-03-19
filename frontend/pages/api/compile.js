@@ -1,4 +1,5 @@
 const solc = require("solc");
+const path = require("path");
 
 export default function handler(req, res) {
   if (!req.body.sourceCode) {
@@ -23,15 +24,16 @@ export default function handler(req, res) {
     },
   };
 
-  var output = JSON.parse(solc.compile(JSON.stringify(input)));
+  const output = JSON.parse(solc.compile(JSON.stringify(input)));
+
   //   console.log(output);
 
   // Error handling
   if (output.errors) {
-    // console.log(output.errors);
-    // console.log(output.errors[0].formattedMessage);
+    console.log(output.errors);
+    console.log(output.errors[0].formattedMessage);
 
-    res.status(400).json({ output: output.errors[0].formattedMessage });
+    res.status(400).json({ output: output.errors });
   }
 
   var response;

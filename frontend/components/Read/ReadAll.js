@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ReadItem from './ReadItem';
 
-const ReadAll = ({abi}) => {
+const ReadAll = ({ abi }) => {
   const inputArr = [];
   const nonInputArr = [];
 
@@ -21,8 +21,11 @@ const ReadAll = ({abi}) => {
 
   return (
     <div>
-
-      {!nonInputArr.length && !inputArr.length && <p className='text-white text-sm text-center py-20'>No read methods available!</p>}
+      {!nonInputArr.length && !inputArr.length && (
+        <p className="text-white text-sm text-center py-20">
+          No read methods available!
+        </p>
+      )}
 
       {nonInputArr.map((item, i) => (
         <>

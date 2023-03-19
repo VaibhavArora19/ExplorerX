@@ -39,7 +39,7 @@ const ReadItem = ({ i, value, datatype, functionName, inputs }) => {
               onSubmit={queryHandler}
               className="flex flex-col"
             >
-              {inputs.map((input, i) => (
+              {inputs?.map((input, i) => (
                 <ReadInput
                   name={input.name}
                   type={input.type}

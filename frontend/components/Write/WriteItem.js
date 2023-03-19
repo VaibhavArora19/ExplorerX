@@ -47,7 +47,7 @@ const WriteItem = ({ functionName, i, inputs }) => {
             onSubmit={writeHandler}
             className="flex flex-col"
           >
-            {inputs.map((input, i) => (
+            {inputs?.map((input, i) => (
               <div key={i}>
                 <p className="text-sm text-gray-300 mb-1">{input.name}</p>
                 <input

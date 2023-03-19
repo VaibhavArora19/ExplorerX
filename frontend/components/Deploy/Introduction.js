@@ -64,7 +64,7 @@ const Introduction = ({setPage, page}) => {
         <h2 className='text-lg font-semibold text-white'>Deploy Smartcontracts</h2>
         {data.map(item => <Helper key={item.id} img={item.img} title={item.title} subtitle={item.subtitle} />)}
 
-        <button onClick={nextPageHandler} className='py-3 w-full bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800'>Get Started</button>
+        <button onClick={nextPageHandler} className='py-3 w-full bg-[#161616] border-gray-700 border text-white rounded-xl mt-4 hover:bg-[#111111]'>Get Started</button>
     </div>
   )
 }

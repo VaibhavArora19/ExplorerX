@@ -119,6 +119,7 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
         </div>
       )}
 
+
       {bytecode == "" ? (
         <button
           onClick={compileHandler}
@@ -134,6 +135,8 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
           Deploy
         </button>
       )}
+
+      
     </div>
   );
 };

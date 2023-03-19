@@ -82,10 +82,10 @@ const ChainModal = ({ onClose, sendData }) => {
 
   return (
     <>
-      <Backdrop onClose={onClose} />
-      <div className="w-[450px] rounded-2xl absolute top-[50%] left-[46%] shadow-md -translate-x-[50%] -translate-y-[50%] z-10 rounded-b-2xl  overflow-hidden border border-gray-800">
-        <div className="bg-[#1D40AF] pt-6 pb-10 px-4 w-full rounded-t-2xl">
-          <h2 className="text-white font-semibold">Select a Chain</h2>
+    <Backdrop onClose={onClose} />
+    <div className='w-[450px] rounded-2xl absolute top-[50%] left-[46%] shadow-md -translate-x-[50%] -translate-y-[50%] z-10 rounded-b-2xl  overflow-hidden border border-gray-800'>
+        <div className='bg-[#232323] pt-6 pb-10 px-4 w-full  rounded-t-2xl'>
+            <h2 className='text-gray-500 font-semibold'>Select a Chain</h2>
         </div>
         <div className=" bg-[#151515] p-3 text-white flex flex-col gap-2 overflow-y-scroll max-h-[350px]">
           {chains.map((chain, i) => (

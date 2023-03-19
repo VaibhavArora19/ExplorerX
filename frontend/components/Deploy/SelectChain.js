@@ -121,6 +121,7 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
                 size={20}
               />
             </div>
+
             <p className={`${isSinlgeChain && "text-blue-300 "} font-medium`}>
               Single Chain
             </p>
@@ -137,6 +138,7 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
                 size={20}
                 className={`${isMultichain ? "text-green-400" : ""}`}
               />
+
             </div>
             <p
               className={`${isMultichain ? "text-green-400" : ""} font-medium`}

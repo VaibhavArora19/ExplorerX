@@ -28,12 +28,22 @@ const createResponse = await db.applySchema(`
     @public
     collection Contracts {
         id: string;
+        name: string;
+        description?: string;
+        owner: string;
+        contractCode: string;
+        abi: string;
         chains?: Chain[];
 
         @index(id);
 
-    constructor(id: string, chains: Chain[]) {
+    constructor(id: string, name: string, description: string, owner: string, contractCode: string, abi: string, chains: Chain[]) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+        this.owner = owner;
+        this.contractCode = contractCode;
+        this.abi = abi;
         this.chains = chains;
         
         }

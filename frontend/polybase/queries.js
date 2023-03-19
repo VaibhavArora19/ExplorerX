@@ -12,16 +12,22 @@ export const createDB = () => {
     return db;
 }
 
-export const createContractRecord = async (id) => {
+export const createContractRecord = async (id, chainIds) => {
 
     const db = createDB();
 
-    const response = await db.collection('Contracts').create([id, [db.collection('Chain').record(id)]])
+    let chainContracts = [];
+
+    for(let chain of chainIds) {
+
+        chainContracts.push(db.collection('Chain').record(chain));
+    }
+    const response = await db.collection('Contracts').create([id, chainContracts])
     
     return response;
 }
 
-const readContractRecord = async (id) => {
+export const readContractRecord = async (id) => {
     const db = createDB();
 
     const data = await db.collection("Contracts").record(id).get();
@@ -29,7 +35,7 @@ const readContractRecord = async (id) => {
     return data;
 };
 
-export const createChainRecord = async (id, contractId, name, contractAddress) => {
+ const createChainRecord = async (id, contractId, name, contractAddress) => {
 
     const db = createDB();
 
@@ -47,6 +53,7 @@ export const readChainRecord = async (id) => {
     return response;
 }
 
-// createContractRecord('0x123').then(data => console.log(data));
+// let chainId = ["0x2dFe937cD98Ab92e59cF3139138f18c823a4efE7", "0x3E14dC1b13c488a8d5D310918780c983bD5982E7", "0x4E583d9390082B65Bef884b629DFA426114CED6d", "0x567c4B141ED61923967cA25Ef4906C8781069a10"]
+// createContractRecord('1234', chainId).then(data => console.log(data));
 // readContractRecord('0x123').then(data => console.log(data.data.chains));
-// createChainRecord('0x123', 'gnosis', '0x123').then(data => console.log(data));
+// createChainRecord('0x567c4B141ED61923967cA25Ef4906C8781069a10','1234', 'Optimism', '0x567c4B141ED61923967cA25Ef4906C8781069a10').then(data => console.log(data));

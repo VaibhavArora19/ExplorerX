@@ -5,6 +5,8 @@
   },
   "dependencies": {
     "@connext/smart-contracts": "^1.0.3-alpha.0",
-    "@openzeppelin/contracts": "^4.8.2"
+    "@hyperlane-xyz/core": "^1.2.2",
+    "@openzeppelin/contracts": "^4.8.2",
+    "@uma/core": "^2.52.0"
   }
 }

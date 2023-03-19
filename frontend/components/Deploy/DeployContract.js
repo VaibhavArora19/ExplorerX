@@ -4,6 +4,8 @@ import { ethers } from "ethers";
 const DeployContract = ({ setPage, page, formData, setFormData }) => {
   const [initializable, setInitializable] = useState(false);
   const [salt, setSalt] = useState(0);
+  const [bytecode, setBytecode] = useState("");
+  const [abi, setAbi] = useState("");
 
   console.log(formData, "formData");
 
@@ -17,11 +19,8 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
 
   const computeAddress = (bytecode, salt) => {};
 
-  const deployContractHandler = async () => {
+  const compileHandler = async () => {
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
       const sourceCode = formData.contractPasted;
       const response = await fetch("./api/compile", {
         method: "POST",
@@ -31,6 +30,24 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
         body: JSON.stringify({ sourceCode }),
       });
       const data = await response.json();
+      setAbi(data.output.abi);
+      if (initializable) {
+        const bytecode = initializeBytecode();
+        setBytecode(data.output.bytecode + bytecode);
+      } else {
+        setBytecode(data.output.bytecode);
+      }
+    } catch (err) {
+      console.log(err, "Compile");
+    }
+  };
+
+  const deployContractHandler = async () => {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+
       // need to get from user
       const randomNumber = 0;
       const abiCoder = new ethers.AbiCoder();
@@ -39,6 +56,19 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
     } catch (err) {
       console.log(err, "DeployContract");
     }
+  };
+
+  const initializeBytecode = () => {
+    const argTypes = document.getElementById("argTypes").value;
+    const argValues = document.getElementById("argValues").value;
+    let ABI = ["function initialize(" + argTypes + ")"];
+    let iface = new ethers.Interface(ABI);
+    console.log(iface);
+    const bytecode = iface.encodeFunctionData(
+      "initialize",
+      argValues.split(",").map((arg) => arg.trim())
+    );
+    return bytecode;
   };
 
   const initializableHandler = () => {
@@ -71,13 +101,42 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
       >
         Initialize
       </div>
+      {initializable && (
+        <div className="flex flex-col ">
+          <p>Arguement types</p>
+          <input id="argTypes" className="text-black"></input>
+          <p>Arguement values</p>
+          <input id="argValues" className="text-black"></input>
+        </div>
+      )}
+      {bytecode != "" && (
+        <div className="flex flex-col mt-5">
+          <p className="text-sm text-gray-300">salt</p>
+          <input className="text-black" type="number" id="salt"></input>
+          <button className=" bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800">
+            Generate Address
+          </button>
+        </div>
+      )}
 
-      <button
-        onClick={deployContractHandler}
-        className="py-3 bg-[#161616] hover:bg-[#111111] mt-4 border-gray-700 border text-white rounded-xl mt-"
-      >
-        Deploy
-      </button>
+
+      {bytecode == "" ? (
+        <button
+          onClick={compileHandler}
+          className="py-3 bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800"
+        >
+          Compile
+        </button>
+      ) : (
+        <button
+          onClick={deployContractHandler}
+          className="py-3 bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800"
+        >
+          Deploy
+        </button>
+      )}
+
+      
     </div>
   );
 };

@@ -168,7 +168,7 @@ const Address = () => {
             {alternateContracts.length > 0 && (
               <Details
                 data={alternateContracts}
-                heading="Other chains"
+                heading="Deployed on other chains"
                 isAddress={true}
               />
             )}

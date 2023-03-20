@@ -45,7 +45,7 @@ contract XDeployer is IXReceiver, Initializable {
             initializable,
             initializeData
         );
-        for (uint i = 0; i < destinationDomain.length; i++) {
+        for (uint i = 0; i < destinationDomain.length; ) {
             connext.xcall{value: relayerFee[i]}(
                 destinationDomain[i], // _destination: Domain ID of the destination chain
                 target, // _to: address of the target contract
@@ -55,6 +55,9 @@ contract XDeployer is IXReceiver, Initializable {
                 0, // _slippage: max slippage the user will accept in BPS (e.g. 300 = 3%)
                 callData // _callData: the encoded calldata to send
             );
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -95,7 +98,7 @@ contract XDeployer is IXReceiver, Initializable {
         // transfer ownership to the _originSender
         if (initializable) {
             (bool success, ) = deployedAddress.call(initializeData);
-            require(success, "transferOwnership failed");
+            require(success, "initiailse failed");
         }
         return deployedAddress;
     }

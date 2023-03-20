@@ -5,8 +5,10 @@
   },
   "dependencies": {
     "@connext/smart-contracts": "^1.0.3-alpha.0",
-    "@hyperlane-xyz/core": "^1.2.2",
+    "@matterlabs/hardhat-zksync-deploy": "^0.6.2",
+    "@matterlabs/hardhat-zksync-solc": "^0.3.14",
     "@openzeppelin/contracts": "^4.8.2",
-    "@uma/core": "^2.52.0"
+    "@uma/core": "^2.52.0",
+    "zksync-web3": "^0.13.4"
   }
 }

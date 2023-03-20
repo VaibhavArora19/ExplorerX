@@ -15,14 +15,16 @@ import {
   optimismGoerli,
   zkSyncTestnet,
 } from "wagmi/chains";
+import { Mantle } from "@/constants";
 
 const chains = [
-  polygonMumbai,
   scrollTestnet,
+  polygonMumbai,
   filecoinHyperspace,
   gnosisChiado,
   optimismGoerli,
   zkSyncTestnet,
+  Mantle,
 ];
 const projectId = "e4c7b443da64b8536ebe63013642fd28";
 

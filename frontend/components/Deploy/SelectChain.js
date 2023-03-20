@@ -6,6 +6,15 @@ import polygonSvg from "../../public/assets/deploy/polygon.svg";
 import ChainModal from "./ChainModal";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount } from "wagmi";
+import {
+  polygonMumbai,
+  scrollTestnet,
+  filecoinHyperspace,
+  gnosisChiado,
+  optimismGoerli,
+  zkSyncTestnet,
+} from "wagmi/chains";
+import { Mantle } from "@/constants";
 
 const SelectChain = ({ setPage, page, formData, setFormData }) => {
   const [isMultichain, setIsMultichain] = useState(false);
@@ -14,7 +23,6 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
   const [chain, setChain] = useState({
     chainName: "",
     chainImg: "",
-    chainAdd: "",
   });
 
   const { isOpen, open, close, setDefaultChain } = useWeb3Modal();
@@ -22,7 +30,27 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
 
   const connectWalletHandler = async () => {
     try {
-      setDefaultChain(chain.chainName);
+      if (chain.chainName === "Polygon Mumbai") {
+        setDefaultChain(polygonMumbai);
+      }
+      if (chain.chainName === "Scroll Testnet") {
+        setDefaultChain(scrollTestnet);
+      }
+      if (chain.chainName === "FVM Hyperspace") {
+        setDefaultChain(filecoinHyperspace);
+      }
+      if (chain.chainName === "Gnosis Chiado") {
+        setDefaultChain(gnosisChiado);
+      }
+      if (chain.chainName === "Optimism Goerli") {
+        setDefaultChain(optimismGoerli);
+      }
+      if (chain.chainName === "ZKSync Testnet") {
+        setDefaultChain(zkSyncTestnet);
+      }
+      if (chain.chainName === "Mantle Testnet") {
+        setDefaultChain(Mantle);
+      }
       await open();
     } catch (err) {
       console.log(err, "wallet  connected");
@@ -138,7 +166,6 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
                 size={20}
                 className={`${isMultichain ? "text-green-400" : ""}`}
               />
-
             </div>
             <p
               className={`${isMultichain ? "text-green-400" : ""} font-medium`}

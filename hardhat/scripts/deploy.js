@@ -18,7 +18,7 @@ async function main() {
 
   const XDeployer = await hre.ethers.getContractFactory("XDeployer");
   const salt =
-    "0x000000000000000000000000000000000000000000000000000000000000000";
+    "0x0000000000000000000000000000000000000000000000000000000000000011";
   console.log("salt", salt);
 
   await create2Deployer.deploy(0, salt, XDeployer.bytecode);
@@ -27,7 +27,7 @@ async function main() {
   console.log("address", address);
 
   const xDeployer = await XDeployer.attach(address);
-  await xDeployer.initialize("0xb0694fecedd88e5590a563adb5f194d2de30f0b6");
+  await xDeployer.initialize("0x2334937846Ab2A3FCE747b32587e1A1A2f6EEC5a");
   console.log("xDeployer", xDeployer.address);
 }
 

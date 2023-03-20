@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AiFillInfoCircle } from 'react-icons/ai';
+import { BsArrowLeftShort } from 'react-icons/bs';
 import { ethers } from 'ethers';
 import { useContract, useSigner } from 'wagmi';
 import {
@@ -201,87 +201,98 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
     setInitializable(!initializable);
   };
   return (
-    <div className="text-white w-[800px] bg-[#1E1E1E] flex flex-col p-7 pt-10 rounded-2xl border border-gray-700">
-      <h2 className="text-lg font-semibold text-white mb-5">
-        Deploy Smart Contract
-      </h2>
-
-      <textarea
-        onChange={(event) => {
-          setFormData({ ...formData, contractPasted: event.target.value });
-        }}
-        value={formData.contractPasted}
-        rows={20}
-        placeholder="Paste your contract here!"
-        className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none min-h-[300px] max-h-[350px]"
-      />
-
-      <p className="text-sm mt-6 mb-2 text-gray-300">
-        Select the below button if you want to initialize your contract
-      </p>
-      <button
-        disabled={!formData.contractPasted.length ? true : false}
-        onClick={initializableHandler}
-        className={`py-3 w-[150px] text-center rounded-md mb-1 ${
-          !formData.contractPasted.length && 'cursor-not-allowed'
-        } ${initializable ? 'bg-[#1a3831] text-green-300' : 'bg-[#363636]'} `}
+    <>
+      <p
+        onClick={previousPageHandler}
+        className="text-gray-500 flex items-center gap-1 text-sm absolute top-14 left-[23%] cursor-pointer"
       >
-        Initialize
-      </button>
-      {initializable && (
-        <div className="flex flex-col ">
-          <p className="text-sm mt-6 mb-2 text-gray-300">Arguement types</p>
-          <input
-            id="argTypes"
-            className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none"
-          ></input>
-          <p className="text-sm mt-3 mb-2 text-gray-300">Arguement values</p>
-          <input
-            id="argValues"
-            className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none"
-          ></input>
-        </div>
-      )}
-      {bytecode != '' && (
-        <div className="flex flex-col mt-5">
-          {computedAddress !== '' && <p>{computedAddress}</p>}
-          <p className="text-sm text-gray-300">salt</p>
-          <input
-            className="text-black"
-            type="number"
-            id="salt"
-            onChange={(e) => setSalt(e.target.value)}
-          ></input>
-          <button
-            className=" bg-[#1a3831] border-green-200 border text-green-300 rounded-xl mt-4 hover:bg-green-800"
-            onClick={() => computeAddress()}
-          >
-            Generate Address
-          </button>
-        </div>
-      )}
+        <span>
+          <BsArrowLeftShort />
+        </span>
+        Back
+      </p>
+      <div className="text-white w-[800px] bg-[#1E1E1E] flex flex-col p-7 pt-10 rounded-2xl border border-gray-700">
+        <h2 className="text-lg font-semibold text-white mb-5">
+          Deploy Smart Contract
+        </h2>
 
-      {bytecode == '' ? (
+        <textarea
+          onChange={(event) => {
+            setFormData({ ...formData, contractPasted: event.target.value });
+          }}
+          value={formData.contractPasted}
+          rows={20}
+          placeholder="Paste your contract here!"
+          className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none min-h-[300px] max-h-[350px]"
+        />
+
+        <p className="text-sm mt-6 mb-2 text-gray-300">
+          Select the below button if you want to initialize your contract
+        </p>
         <button
           disabled={!formData.contractPasted.length ? true : false}
-          onClick={compileHandler}
-          className={`py-3 bg-[#1a3831] border-green-700 border text-green-300 rounded-xl mt-4 hover:bg-[#142c26] ${
+          onClick={initializableHandler}
+          className={`py-3 w-[150px] text-center rounded-md mb-1 ${
             !formData.contractPasted.length && 'cursor-not-allowed'
-          }`}
+          } ${initializable ? 'bg-[#1a3831] text-green-300' : 'bg-[#363636]'} `}
         >
-          Compile
+          Initialize
         </button>
-      ) : (
-        <button
-          onClick={deployContractHandler}
-          className="py-3 bg-[#1a3831] border-green-700 border text-green-300 rounded-xl mt-4 hover:bg-[#142c26]"
-        >
-          Deploy
-        </button>
-      )}
+        {initializable && (
+          <div className="flex flex-col ">
+            <p className="text-sm mt-6 mb-2 text-gray-300">Arguement types</p>
+            <input
+              id="argTypes"
+              className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none"
+            ></input>
+            <p className="text-sm mt-3 mb-2 text-gray-300">Arguement values</p>
+            <input
+              id="argValues"
+              className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none"
+            ></input>
+          </div>
+        )}
+        {bytecode != '' && (
+          <div className="flex flex-col mt-5">
+            {computedAddress !== '' && <p>{computedAddress}</p>}
+            <p className="text-sm text-gray-300">salt</p>
+            <input
+              className="text-black"
+              type="number"
+              id="salt"
+              onChange={(e) => setSalt(e.target.value)}
+            ></input>
+            <button
+              className=" bg-[#1a3831] border-green-200 border text-green-300 rounded-xl mt-4 hover:bg-green-800"
+              onClick={() => computeAddress()}
+            >
+              Generate Address
+            </button>
+          </div>
+        )}
 
-      {showCompileModal && <DeployModal onClose={closeModalHandler} />}
-    </div>
+        {bytecode == '' ? (
+          <button
+            disabled={!formData.contractPasted.length ? true : false}
+            onClick={compileHandler}
+            className={`py-3 bg-[#1a3831] border-green-700 border text-green-300 rounded-xl mt-4 hover:bg-[#142c26] ${
+              !formData.contractPasted.length && 'cursor-not-allowed'
+            }`}
+          >
+            Compile
+          </button>
+        ) : (
+          <button
+            onClick={deployContractHandler}
+            className="py-3 bg-[#1a3831] border-green-700 border text-green-300 rounded-xl mt-4 hover:bg-[#142c26]"
+          >
+            Deploy
+          </button>
+        )}
+
+        {showCompileModal && <DeployModal onClose={closeModalHandler} />}
+      </div>
+    </>
   );
 };
 

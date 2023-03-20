@@ -1,4 +1,5 @@
 import Hero from '@/components/Home/Hero';
+import Navbar from '@/components/Home/Navbar';
 import Head from 'next/head';
 
 const LandingPage = () => {
@@ -20,6 +21,7 @@ const LandingPage = () => {
         />
       </Head>
       <main className="min-h-screen bg-[black]">
+        <Navbar />
         <Hero />
       </main>
     </>

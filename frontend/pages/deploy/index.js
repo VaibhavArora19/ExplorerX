@@ -39,7 +39,7 @@ const index = () => {
   }
 
   return (
-    <div className='bg-[#171717] h-screen flex items-center justify-center'>
+    <div className='bg-[#171717] min-h-screen flex items-center justify-center py-20'>
         <>{PageDisplay()}</>
     </div>
   )

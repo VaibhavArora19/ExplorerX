@@ -60,10 +60,10 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
   };
 
   return (
-    <div className="text-white w-[750px] bg-[#1E1E1E] py-10 px-10 rounded-2xl border border-gray-700">
+    <div className="text-white w-[800px] bg-[#1E1E1E] py-10 px-10 rounded-2xl border border-gray-700">
       <h2 className="text-2xl font-semibold mb-7">Multichain</h2>
 
-      <form className="flex flex-col ">
+      <form className="flex flex-col">
         <p className="text-sm text-gray-400 mb-1">Choose multiple chain</p>
 
         <div className="flex flex-wrap justify-between gap-5">
@@ -74,7 +74,7 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
                   onClick={() => {
                     setChainSelected([...chainSelected, chain]);
                   }}
-                  className={`py-3 px-4 w-fit flex gap-4 hover:bg-[#323131] bg-[#161616] cursor-pointer rounded-xl `}
+                  className={`py-3 px-4 w-[300px] items-center flex gap-4 hover:bg-[#323131] bg-[#161616] cursor-pointer rounded-xl `}
                 >
                   <Image
                     src={chain.chainImg}

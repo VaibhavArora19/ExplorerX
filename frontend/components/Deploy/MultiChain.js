@@ -6,57 +6,44 @@ import scrollImg from "../../public/assets/deploy/scrollImg.png";
 import zksyncImg from "../../public/assets/deploy/ZKsyncImg.png";
 import optimismImg from "../../public/assets/deploy/optimism.png";
 import fvmImg from "../../public/assets/deploy/fvm.png";
-import mantleImg from "../../public/assets/deploy/mantle.png";
-
+import mantleImg from "../../public/assets/deploy/mantle.jpeg";
 
 const chains = [
   {
     id: "c1",
     chainImg: polygonSvg,
-    chainName: "Polygon",
-    chainAdd: "0xq090190310zja8q9409qe2420",
+    chainName: "Polygon Mumbai",
   },
   {
     id: "c2",
     chainImg: gnosisImg,
-    chainName: "Gnosis",
-    chainAdd: "0xq090190310zja8q9409qe2420",
+    chainName: "Gnosis Chiado",
   },
   {
     id: "c3",
     chainImg: scrollImg,
-    chainName: "Scroll",
-    chainAdd: "0xq090190310zja8q9409qe2420",
+    chainName: "Scroll Testnet",
   },
   {
     id: "c4",
     chainImg: optimismImg,
-    chainName: "Optimism-Goerli",
-    chainAdd: "0xq090190310zja8q9409qe2420",
+    chainName: "Optimism Goerli",
   },
   {
     id: "c5",
     chainImg: fvmImg,
-    chainName: "FVM",
-    chainAdd: "0xq090190310zja8q9409qe2420",
+    chainName: "FVM Hyperspace",
   },
   {
     id: "c6",
     chainImg: zksyncImg,
-    chainName: "ZKSync",
-    chainAdd: "0xq090190310zja8q9409qe2420",
+    chainName: "ZKSync Testnet",
   },
   {
     id: "c7",
     chainImg: mantleImg,
-    chainName: "Mantle",
-    chainAdd: "0xq090190310zja8q9409qe2420",
-  },
-  {
-    id: "c8",
-    chainImg: polygonSvg,
-    chainName: "Sepolia",
-    chainAdd: "0xq090190310zja8q9409qe2420",
+
+    chainName: "Mantle Testnet",
   },
 ];
 
@@ -80,27 +67,30 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
         <p className="text-sm text-gray-400 mb-1">Choose multiple chain</p>
 
         <div className="flex flex-wrap justify-between gap-5">
-          {chains.map((chain, index) => (
-            <div
-              onClick={() => {
-                setChainSelected([...chainSelected, chain]);
-              }}
-              className={`py-3 px-4 w-fit flex gap-4 hover:bg-[#323131] bg-[#161616] cursor-pointer rounded-xl `}
-            >
-              <Image
-                src={chain.chainImg}
-                alt={chain.chainName}
-                width={40}
-                height={40}
-              />
-              <div>
-                <h3 className="font-semibold">{chain.chainName}</h3>
-                <p className="text-[12px] tracking-wide text-gray-500">
+          {chains.map(
+            (chain, index) =>
+              chain.chainName !== formData.currentDeployChain.chainName && (
+                <div
+                  onClick={() => {
+                    setChainSelected([...chainSelected, chain]);
+                  }}
+                  className={`py-3 px-4 w-fit flex gap-4 hover:bg-[#323131] bg-[#161616] cursor-pointer rounded-xl `}
+                >
+                  <Image
+                    src={chain.chainImg}
+                    alt={chain.chainName}
+                    width={40}
+                    height={40}
+                  />
+                  <div>
+                    <h3 className="font-semibold">{chain.chainName}</h3>
+                    {/* <p className="text-[12px] tracking-wide text-gray-500">
                   {chain.chainAdd}
-                </p>
-              </div>
-            </div>
-          ))}
+                </p> */}
+                  </div>
+                </div>
+              )
+          )}
         </div>
       </form>
 

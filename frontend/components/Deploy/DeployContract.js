@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { ethers } from "ethers";
+import { useContract, useSigner } from "wagmi";
+import { deployerAbi, contractAddress, connextDomains } from "@/constants";
+
 const DeployContract = ({ setPage, page, formData, setFormData }) => {
   const [initializable, setInitializable] = useState(false);
-  const [salt, setSalt] = useState(0);
+  const { data: signer } = useSigner();
+  const [salt, setSalt] = useState("");
   const [bytecode, setBytecode] = useState("");
   const [abi, setAbi] = useState("");
+  const [computedAddress, setComputedAddress] = useState("");
+  const contract = useContract({
+    address: contractAddress,
+    abi: deployerAbi,
+    signerOrProvider: signer,
+  });
 
   console.log(formData, "formData");
 
@@ -17,7 +27,21 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
     setPage((currPage) => currPage - 1);
   };
 
-  const computeAddress = (bytecode, salt) => {};
+  const computeAddress = async () => {
+    try {
+      if (salt === "") {
+        alert("Please enter salt");
+        return;
+      }
+      const abiCoder = new ethers.utils.AbiCoder();
+      const saltbytes = abiCoder.encode(["uint256"], [salt]);
+      const address = await contract.computeAddress(saltbytes, bytecode);
+      console.log(address, "address");
+      setComputedAddress(address);
+    } catch (err) {
+      console.log(err, "compute address");
+    }
+  };
 
   const compileHandler = async () => {
     try {
@@ -30,6 +54,7 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
         body: JSON.stringify({ sourceCode }),
       });
       const data = await response.json();
+      console.log(data, "data");
       setAbi(data.output.abi);
       if (initializable) {
         const bytecode = initializeBytecode();
@@ -44,15 +69,34 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
 
   const deployContractHandler = async () => {
     try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
+      if (salt === "") {
+        alert("Please enter salt");
+        return;
+      }
+      const abiCoder = new ethers.utils.AbiCoder();
+      const saltbytes = abiCoder.encode(["uint256"], [salt]);
+      let domains = [];
+      let fees = [];
+      if (formData.currentDeployChain.chainName in connextDomains) {
+        const keys = Object.keys(connextDomains);
 
-      // need to get from user
-      const randomNumber = 0;
-      const abiCoder = new ethers.AbiCoder();
-      const salt = abiCoder.encode(["uint256"], [randomNumber]);
-      console.log(salt);
+        for (let i = 0; i < keys.length; i++) {
+          if (formData.currentDeployChain.chainName !== keys[i]) {
+            domains.push(connextDomains[keys[i]]);
+            if (keys[i] === "Polygon Mumbai") {
+              fees.push(ethers.parseEther("15"));
+            } else {
+              fees.push(ethers.parseEther("0.1"));
+            }
+          }
+        }
+      }
+      console.log(domains, "domains");
+      console.log(fees, "fees");
+
+      // const tx = await contract.deploy(saltbytes, bytecode);
+      // const receipt = await tx.wait();
+      // console.log(receipt, "receipt");
     } catch (err) {
       console.log(err, "DeployContract");
     }
@@ -63,7 +107,6 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
     const argValues = document.getElementById("argValues").value;
     let ABI = ["function initialize(" + argTypes + ")"];
     let iface = new ethers.Interface(ABI);
-    console.log(iface);
     const bytecode = iface.encodeFunctionData(
       "initialize",
       argValues.split(",").map((arg) => arg.trim())
@@ -111,14 +154,22 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
       )}
       {bytecode != "" && (
         <div className="flex flex-col mt-5">
+          {computedAddress !== "" && <p>{computedAddress}</p>}
           <p className="text-sm text-gray-300">salt</p>
-          <input className="text-black" type="number" id="salt"></input>
-          <button className=" bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800">
+          <input
+            className="text-black"
+            type="number"
+            id="salt"
+            onChange={(e) => setSalt(e.target.value)}
+          ></input>
+          <button
+            className=" bg-[#1C4ED8] border-blue-200 border text-white rounded-xl mt-4 hover:bg-blue-800"
+            onClick={() => computeAddress()}
+          >
             Generate Address
           </button>
         </div>
       )}
-
 
       {bytecode == "" ? (
         <button
@@ -135,8 +186,6 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
           Deploy
         </button>
       )}
-
-      
     </div>
   );
 };

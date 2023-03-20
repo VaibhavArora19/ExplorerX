@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { AiFillInfoCircle } from "react-icons/ai";
 import { ethers } from "ethers";
 import { useContract, useSigner } from "wagmi";
-import { deployerAbi, contractAddress, connextDomains } from "@/constants";
+import {
+  deployerAbi,
+  contractAddress,
+  connextDomains,
+  rpcUrls,
+} from "@/constants";
 
 const DeployContract = ({ setPage, page, formData, setFormData }) => {
   const [initializable, setInitializable] = useState(false);
+  const [initializableData, setInitializableData] = useState("0x");
   const { data: signer } = useSigner();
   const [salt, setSalt] = useState("");
   const [bytecode, setBytecode] = useState("");
@@ -57,11 +63,9 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
       console.log(data, "data");
       setAbi(data.output.abi);
       if (initializable) {
-        const bytecode = initializeBytecode();
-        setBytecode(data.output.bytecode + bytecode);
-      } else {
-        setBytecode(data.output.bytecode);
+        setInitializableData(initializeBytecode());
       }
+      setBytecode(data.output.bytecode);
     } catch (err) {
       console.log(err, "Compile");
     }
@@ -75,6 +79,8 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
       }
       const abiCoder = new ethers.utils.AbiCoder();
       const saltbytes = abiCoder.encode(["uint256"], [salt]);
+      console.log(saltbytes, "saltbytes");
+      console.log(bytecode, "bytecode");
       let domains = [];
       let fees = [];
       if (formData.currentDeployChain.chainName in connextDomains) {
@@ -84,19 +90,87 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
           if (formData.currentDeployChain.chainName !== keys[i]) {
             domains.push(connextDomains[keys[i]]);
             if (keys[i] === "Polygon Mumbai") {
-              fees.push(ethers.parseEther("15"));
+              fees.push(ethers.utils.parseEther("0.01"));
             } else {
-              fees.push(ethers.parseEther("0.1"));
+              fees.push(ethers.utils.parseEther("1"));
             }
           }
         }
-      }
-      console.log(domains, "domains");
-      console.log(fees, "fees");
 
-      // const tx = await contract.deploy(saltbytes, bytecode);
-      // const receipt = await tx.wait();
-      // console.log(receipt, "receipt");
+        let totalFee = ethers.utils.parseEther("0");
+        for (let i = 0; i < fees.length; i++) {
+          totalFee = totalFee.add(fees[i]);
+        }
+        console.log(totalFee, "totalFee");
+        let tx = await contract.xDeployer(
+          contractAddress,
+          domains,
+          saltbytes,
+          bytecode,
+          fees,
+          initializable,
+          initializableData,
+          totalFee,
+          {
+            value: totalFee,
+          }
+        );
+        console.log(tx, "tx");
+        const selectedChains = formData.multichains;
+        for (let i = 0; i < selectedChains.length; i++) {
+          if (!(selectedChains[i].chainName in connextDomains)) {
+            console.log(
+              selectedChains[i].chainName,
+              "selectedChains[i].chainName"
+            );
+            const provider = new ethers.providers.JsonRpcProvider(
+              rpcUrls[selectedChains[i].chainName]
+            );
+            const wallet = new ethers.Wallet(
+              process.env.NEXT_PUBLIC_PRIVATE_KEY,
+              provider
+            );
+            const account = wallet.connect(provider);
+            let tx = await contract
+              .connect(account)
+              .deployContract(
+                saltbytes,
+                bytecode,
+                initializable,
+                initializableData
+              );
+            console.log(tx, "tx");
+          }
+        }
+      } else {
+        const selectedChains = formData.multichains;
+        let tx = await contract.deployContract(
+          saltbytes,
+          bytecode,
+          initializable,
+          initializableData
+        );
+        console.log(tx, "tx");
+        for (let i = 0; i < selectedChains.length; i++) {
+          const provider = new ethers.providers.JsonRpcProvider(
+            rpcUrls[selectedChains[i].chainName]
+          );
+          const wallet = new ethers.Wallet(
+            process.env.NEXT_PUBLIC_PRIVATE_KEY,
+            provider
+          );
+          const account = wallet.connect(provider);
+          let tx = await contract
+            .connect(account)
+            .deployContract(
+              saltbytes,
+              bytecode,
+              initializable,
+              initializableData
+            );
+          console.log(tx, "tx");
+        }
+      }
     } catch (err) {
       console.log(err, "DeployContract");
     }

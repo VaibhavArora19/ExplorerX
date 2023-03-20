@@ -42,6 +42,7 @@ const chains = [
   {
     id: "c7",
     chainImg: mantleImg,
+
     chainName: "Mantle Testnet",
   },
 ];

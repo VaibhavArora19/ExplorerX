@@ -4,6 +4,15 @@ export const connextDomains = {
   "Optimism Goerli": 1735356532,
   "Polygon Mumbai": 9991,
 };
+export const rpcUrls = {
+  "Optimism Goerli": "https://goerli.optimism.io",
+  "Polygon Mumbai": "https://rpc-mumbai.maticvigil.com",
+  "Gnosis Chiado": "https://rpc.chiadochain.net",
+  "Scroll Testnet": "https://alpha-rpc.scroll.io/l2",
+  "FVM Hyperspace": "https://api.hyperspace.node.glif.io/rpc/v1",
+  "ZKSync Testnet": "https://zksync2-testnet.zksync.dev",
+  "Mantle Testnet": "https://rpc.testnet.mantle.xyz",
+};
 export const Mantle = {
   id: 5001,
   name: "Mantle Testnet",

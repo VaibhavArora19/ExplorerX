@@ -1,11 +1,13 @@
 import Image from "next/image";
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { GiBreakingChain } from "react-icons/gi";
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md";
 import polygonSvg from "../../public/assets/deploy/polygon.svg";
 import ChainModal from "./ChainModal";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount } from "wagmi";
+import { useNetwork, useSwitchNetwork } from "wagmi";
+
 import {
   polygonMumbai,
   scrollTestnet,
@@ -17,10 +19,16 @@ import {
 import { Mantle } from "@/constants";
 
 const SelectChain = ({ setPage, page, formData, setFormData }) => {
+  const { chain: connectChain } = useNetwork();
+  const { chains, error, isLoading, pendingChainId, switchNetwork } =
+    useSwitchNetwork();
+
+  console.log(chains, "chains");
   const [isMultichain, setIsMultichain] = useState(false);
   const [isSinlgeChain, setIsSingleChain] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [chain, setChain] = useState({
+    chainId: "",
     chainName: "",
     chainImg: "",
   });
@@ -56,6 +64,14 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
       console.log(err, "wallet  connected");
     }
   };
+
+  useEffect(() => {
+    if (connectChain) {
+      if (connectChain.name !== chain.chainName) {
+        switchNetwork(Number(chain.chainId));
+      }
+    }
+  }, [connectChain, chain]);
 
   const sendChain = (chain) => {
     setChain(chain);

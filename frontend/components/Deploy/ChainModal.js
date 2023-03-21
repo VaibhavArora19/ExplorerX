@@ -19,37 +19,37 @@ const Backdrop = ({ onClose }) => {
 
 const chains = [
   {
-    id: "c1",
+    id: "80001",
     chainImg: polygonSvg,
     chainName: "Polygon Mumbai",
   },
   {
-    id: "c2",
+    id: "10200",
     chainImg: gnosisImg,
     chainName: "Gnosis Chiado",
   },
   {
-    id: "c3",
+    id: "534353",
     chainImg: scrollImg,
     chainName: "Scroll Testnet",
   },
   {
-    id: "c4",
+    id: "420",
     chainImg: optimismImg,
     chainName: "Optimism Goerli",
   },
   {
-    id: "c5",
+    id: "3141",
     chainImg: fvmImg,
     chainName: "FVM Hyperspace",
   },
   {
-    id: "c6",
+    id: "280",
     chainImg: zksyncImg,
     chainName: "ZKSync Testnet",
   },
   {
-    id: "c7",
+    id: "5001",
     chainImg: mantleImg,
     chainName: "Mantle Testnet",
   },
@@ -62,6 +62,7 @@ const ChainModal = ({ onClose, sendData }) => {
     const data = {
       chainName: chain.chainName,
       chainImg: chain.chainImg,
+      chainId: chain.id,
     };
     sendData(data);
     onClose();

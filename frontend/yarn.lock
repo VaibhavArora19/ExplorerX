@@ -785,9 +785,9 @@
   "resolved" "https://registry.npmjs.org/@next/font/-/font-13.2.4.tgz"
   "version" "13.2.4"
 
-"@next/swc-darwin-arm64@13.2.4":
-  "integrity" "sha512-S6vBl+OrInP47TM3LlYx65betocKUUlTZDDKzTiRDbsRESeyIkBtZ6Qi5uT2zQs4imqllJznVjFd1bXLx3Aa6A=="
-  "resolved" "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-13.2.4.tgz"
+"@next/swc-win32-x64-msvc@13.2.4":
+  "integrity" "sha512-0MffFmyv7tBLlji01qc0IaPP/LVExzvj7/R5x1Jph1bTAIj4Vu81yFQWHHQAP6r4ff9Ukj1mBK6MDNVXm7Tcvw=="
+  "resolved" "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-13.2.4.tgz"
   "version" "13.2.4"
 
 "@noble/ed25519@^1.7.0":
@@ -1667,6 +1667,11 @@
   "resolved" "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz"
   "version" "2.0.1"
 
+"array-uniq@1.0.2":
+  "integrity" "sha512-GVYjmpL05al4dNlKJm53mKE4w9OOLiuVHWorsIA3YVz+Hu0hcn6PtE3Ydl0EqU7v+7ABC4mjjWsnLUxbpno+CA=="
+  "resolved" "https://registry.npmjs.org/array-uniq/-/array-uniq-1.0.2.tgz"
+  "version" "1.0.2"
+
 "assertion-error@^1.1.0":
   "integrity" "sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw=="
   "resolved" "https://registry.npmjs.org/assertion-error/-/assertion-error-1.1.0.tgz"
@@ -2447,11 +2452,6 @@
   "integrity" "sha512-3XY9e1pP0CVEUCdj5BmfIZxRBTSDycnbqhIOGec9QYtmVH2fbLpj86CFWkrNOkt/Fvty4KZG5lTglL9j/gJ87w=="
   "resolved" "https://registry.npmjs.org/fs/-/fs-0.0.1-security.tgz"
   "version" "0.0.1-security"
-
-"fsevents@~2.3.2":
-  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
-  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
-  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
@@ -3350,6 +3350,19 @@
   "version" "2.1.0"
   dependencies:
     "safe-buffer" "^5.1.0"
+
+"randombytes@2.0.3":
+  "integrity" "sha512-lDVjxQQFoCG1jcrP06LNo2lbWp4QTShEXnhActFBwYuHprllQV6VUpwreApsYqCgD+N1mHoqJ/BI/4eV4R2GYg=="
+  "resolved" "https://registry.npmjs.org/randombytes/-/randombytes-2.0.3.tgz"
+  "version" "2.0.3"
+
+"randomstring@^1.2.3":
+  "integrity" "sha512-3dEFySepTzp2CvH6W/ASYGguPPveBuz5MpZ7MuoUkoVehmyNl9+F9c9GFVrz2QPbM9NXTIHGcmJDY/3j4677kQ=="
+  "resolved" "https://registry.npmjs.org/randomstring/-/randomstring-1.2.3.tgz"
+  "version" "1.2.3"
+  dependencies:
+    "array-uniq" "1.0.2"
+    "randombytes" "2.0.3"
 
 "react-confetti@^6.1.0":
   "integrity" "sha512-7Ypx4vz0+g8ECVxr88W9zhcQpbeujJAVqL14ZnXJ3I23mOI9/oBVTQ3dkJhUmB0D6XOtCZEM6N0Gm9PMngkORw=="

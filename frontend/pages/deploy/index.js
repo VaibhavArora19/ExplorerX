@@ -14,11 +14,12 @@ const index = () => {
     contractDescription: '',
     currentDeployChain: '',
     multichains: [],
-    contractPasted: ''
+    contractPasted: '',
   })
 
 
-  const steps = ['Basic Details', 'Choose Chain', 'Multichain', 'Deploy']
+  const steps = ['Basic Details', 'Choose Chain', 'Multichain', 'Deploy'];
+
 
   const PageDisplay = () => {
     if(page === 0){

@@ -28,7 +28,7 @@ contract OO_GettingStarted {
         ); // Use Görli WETH as the bond currency.
         uint256 reward = 0;
 
-        // Now, make the price request to the Optimistic oracle and set the liveness to 5 days so it will settle quickly.
+        // Now, make the price request to the Optimistic oracle and set the liveness to 5 days
         oo.requestPrice(
             identifier,
             requestTime,

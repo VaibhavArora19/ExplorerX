@@ -6,6 +6,8 @@ import { useContract, useSigner } from "wagmi";
 import { ethers } from "ethers";
 import Confetti from "react-confetti";
 import { useWindowDimensions } from "@/constants/windowSize.js";
+import { createChainRecord, createContractRecord } from "@/polybase/queries";
+import randomstring from "randomstring";
 import {
   deployerAbi,
   contractAddress,
@@ -25,8 +27,10 @@ const DeployModal = ({
   onClose,
   bytecode,
   formData,
+  setFormData,
   initializable,
   initializableData,
+  abi
 }) => {
   const [generatingAddress, setGeneratingAddress] = useState(false);
   const [startDeploying, setStartDeploying] = useState(false);
@@ -42,7 +46,8 @@ const DeployModal = ({
   });
 
   const { height, width } = useWindowDimensions();
-
+  
+  console.log('abi is', abi);
   const computeAddress = async () => {
     try {
       if (salt === "") {
@@ -67,6 +72,26 @@ const DeployModal = ({
     setGeneratingAddress(true);
     await computeAddress();
   };
+
+  //polybase function
+  const addToPolybase = async () => {
+    
+    const contractId = randomstring.generate();
+
+    const chainIds = [];
+    for(let chain of formData.multichains) {
+      
+      //add chains here
+      const chainId = randomstring.generate();
+      let chainContract = await createChainRecord(chainId, contractId, chain?.chainName, computedAddress);
+      chainIds.push(chainId);
+    }
+
+    //owner address needs to be updated
+    let newContract = await createContractRecord(contractId, formData?.contractName, formData?.contractDescription, '0x23f66712ad679b', formData?.contractPasted, abi, chainIds);
+
+  };
+
 
   const deployContractHandler = async () => {
     try {
@@ -174,6 +199,9 @@ const DeployModal = ({
         }
       }
       await tx.wait();
+      
+      //this function will add all the formdata to polbase
+      addToPolybase();
       setDeploymentSuccess(true);
     } catch (err) {
       alert(err.message, "DeployContract");

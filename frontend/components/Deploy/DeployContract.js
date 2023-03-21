@@ -9,7 +9,7 @@ import {
 } from "@/constants";
 import DeployModal from "./DeployModal";
 
-const DeployContract = ({ setPage, page, formData, setFormData }) => {
+const DeployContract = ({ setPage, page, formData, setFormData, addData }) => {
   const [initializable, setInitializable] = useState(false);
   const [initializableData, setInitializableData] = useState("0x");
   const [bytecode, setBytecode] = useState("");
@@ -137,7 +137,9 @@ const DeployContract = ({ setPage, page, formData, setFormData }) => {
           <DeployModal
             onClose={closeModalHandler}
             bytecode={bytecode}
+            abi = {abi}
             formData={formData}
+            setFormData={setFormData}
             initializableData={initializableData}
             initializable={initializable}
           />

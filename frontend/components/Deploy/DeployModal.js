@@ -88,7 +88,7 @@ const DeployModal = ({
     }
 
     //owner address needs to be updated
-    let newContract = await createContractRecord(contractId, formData?.contractName, formData?.contractDescription, '0x23f66712ad679b', formData?.contractPasted, abi, chainIds);
+    let newContract = await createContractRecord(contractId, formData?.contractName, formData?.contractDescription, '0xEDbFce814BB0e816e2A18545262D8A32E32EDA43', formData?.contractPasted, abi, chainIds);
 
   };
 

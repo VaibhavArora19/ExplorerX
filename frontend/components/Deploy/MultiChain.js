@@ -10,45 +10,44 @@ import mantleImg from "../../public/assets/deploy/mantle.jpeg";
 
 const chains = [
   {
-    id: "c1",
+    id: "80001",
     chainImg: polygonSvg,
     chainName: "Polygon Mumbai",
   },
   {
-    id: "c2",
+    id: "10200",
     chainImg: gnosisImg,
     chainName: "Gnosis Chiado",
   },
   {
-    id: "c3",
+    id: "534353",
     chainImg: scrollImg,
     chainName: "Scroll Testnet",
   },
   {
-    id: "c4",
+    id: "420",
     chainImg: optimismImg,
     chainName: "Optimism Goerli",
   },
   {
-    id: "c5",
+    id: "3141",
     chainImg: fvmImg,
     chainName: "FVM Hyperspace",
   },
   {
-    id: "c6",
+    id: "280",
     chainImg: zksyncImg,
     chainName: "ZKSync Testnet",
   },
   {
-    id: "c7",
+    id: "5001",
     chainImg: mantleImg,
-
     chainName: "Mantle Testnet",
   },
 ];
 
 const MultiChain = ({ formData, setFormData, page, setPage }) => {
-  const [chainSelected, setChainSelected] = useState([]);
+  const [chainSelected, setChainSelected] = useState(formData.multichains);
 
   const nextPageHandler = () => {
     setFormData({ ...formData, multichains: chainSelected });
@@ -59,6 +58,18 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
     setPage((currPage) => currPage - 1);
   };
 
+  const setSelectedChain = (chain) => {
+    let index = chainSelected.findIndex((c) => c.chainName === chain.chainName);
+
+    if (index !== -1) {
+      chainSelected.splice(index, 1);
+      setChainSelected([...chainSelected]);
+    } else {
+      setChainSelected([...chainSelected, chain]);
+    }
+  };
+  console.log(chainSelected, "chainSelected");
+
   return (
     <div className="text-white w-[800px] bg-[#1E1E1E] py-10 px-10 rounded-2xl border border-gray-700">
       <h2 className="text-2xl font-semibold mb-7">Multichain</h2>
@@ -67,14 +78,20 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
         <p className="text-sm text-gray-400 mb-1">Choose multiple chain</p>
 
         <div className="flex flex-wrap justify-between gap-5">
-          {chains.map(
-            (chain, index) =>
-              chain.chainName !== formData.currentDeployChain.chainName && (
+          {chains.map((chain, index) => {
+            let isChainSelected =
+              chainSelected.findIndex((c) => c.chainName === chain.chainName) >=
+              0;
+            console.log(isChainSelected, "isChainSelected");
+            if (chain.chainName !== formData.currentDeployChain.chainName)
+              return (
                 <div
                   onClick={() => {
-                    setChainSelected([...chainSelected, chain]);
+                    setSelectedChain(chain);
                   }}
-                  className={`py-3 px-4 w-[300px] items-center flex gap-4 hover:bg-[#323131] bg-[#161616] cursor-pointer rounded-xl `}
+                  className={`py-3 px-4 w-[300px] items-center flex gap-4 hover:bg-[#323131] bg-[#161616] cursor-pointer rounded-xl ${
+                    isChainSelected && `bg-[#323131]`
+                  }`}
                 >
                   <Image
                     src={chain.chainImg}
@@ -89,8 +106,8 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
                 </p> */}
                   </div>
                 </div>
-              )
-          )}
+              );
+          })}
         </div>
       </form>
 

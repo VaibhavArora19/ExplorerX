@@ -23,7 +23,6 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
   const { chains, error, isLoading, pendingChainId, switchNetwork } =
     useSwitchNetwork();
 
-  console.log(chains, "chains");
   const [isMultichain, setIsMultichain] = useState(false);
   const [isSinlgeChain, setIsSingleChain] = useState(false);
   const [openModal, setOpenModal] = useState(false);

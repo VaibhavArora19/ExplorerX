@@ -33,7 +33,7 @@ export default function handler(req, res) {
     console.log(output.errors);
     console.log(output.errors[0].formattedMessage);
 
-    res.status(400).json({ output: output.errors });
+    res.status(400).json({ output: output.errors[0].formattedMessage });
   }
 
   var response;

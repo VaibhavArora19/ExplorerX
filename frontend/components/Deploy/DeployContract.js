@@ -41,15 +41,18 @@ const DeployContract = ({ setPage, page, formData, setFormData, addData }) => {
         body: JSON.stringify({ sourceCode }),
       });
       const data = await response.json();
-      console.log(data, "data");
-      setAbi(data.output.abi);
-      if (initializable) {
-        setInitializableData(initializeBytecode());
-      }
-      setBytecode(data.output.bytecode);
+      if (response.status === 200) {
+        setAbi(data.output.abi);
+        if (initializable) {
+          setInitializableData(initializeBytecode());
+        }
+        setBytecode(data.output.bytecode);
 
-      // showing the compile modal
-      setShowCompileModal(true);
+        // showing the compile modal
+        setShowCompileModal(true);
+      } else {
+        alert(data.output);
+      }
     } catch (err) {
       console.log(err, "Compile");
     }
@@ -137,7 +140,7 @@ const DeployContract = ({ setPage, page, formData, setFormData, addData }) => {
           <DeployModal
             onClose={closeModalHandler}
             bytecode={bytecode}
-            abi = {abi}
+            abi={abi}
             formData={formData}
             setFormData={setFormData}
             initializableData={initializableData}

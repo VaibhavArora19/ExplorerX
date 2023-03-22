@@ -237,6 +237,7 @@ const Address = () => {
               </p>
             </div>
 
+            {/* pass transactions arr */}
             {showTransaction && contractInformation && (
               <TransactionAll />
             )}

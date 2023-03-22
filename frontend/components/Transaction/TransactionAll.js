@@ -46,7 +46,7 @@ const transactions = [
   },
 ];
 
-const TransactionAll = () => {
+const TransactionAll = ({transactionsProp}) => {
   return (
     <div>
       <div className="flex gap-3 text-white text-center py-3 px-2 mt-6 bg-[black]/30 font-semibold font-Poppins rounded-xl">
@@ -55,7 +55,8 @@ const TransactionAll = () => {
         ))}
       </div>
 
-      {/* replace this transactions arr with the array of real transaction & make sure the object passing is namely correct */}
+      {/* replace this transactions arr with the array of real transaction 
+      (prop) & make sure the object passing is namely correct */}
       {transactions.map((transaction) => (
         <Transaction
           key={transaction.id}

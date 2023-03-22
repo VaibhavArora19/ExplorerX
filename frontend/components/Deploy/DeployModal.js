@@ -84,11 +84,11 @@ const DeployModal = ({
       //add chains here
       const chainId = randomstring.generate();
       let chainContract = await createChainRecord(chainId, contractId, chain?.chainName, computedAddress);
-      chainIds.push(chainId);
+
     }
 
     //owner address needs to be updated
-    let newContract = await createContractRecord(contractId, formData?.contractName, formData?.contractDescription, '0xEDbFce814BB0e816e2A18545262D8A32E32EDA43', formData?.contractPasted, abi, chainIds);
+    let newContract = await createContractRecord(contractId, formData?.contractName, formData?.contractDescription, "0xEDbFce814BB0e816e2A18545262D8A32E32EDA43", formData?.contractPasted, JSON.stringify(abi), chainIds);
 
   };
 
@@ -100,6 +100,8 @@ const DeployModal = ({
         return;
       }
       setStartDeploying(true);
+          //this function will add all the formdata to polbase
+          addToPolybase();
       const abiCoder = new ethers.utils.AbiCoder();
       const saltbytes = abiCoder.encode(["uint256"], [salt]);
       console.log(saltbytes, "saltbytes");
@@ -200,8 +202,6 @@ const DeployModal = ({
       }
       await tx.wait();
       
-      //this function will add all the formdata to polbase
-      addToPolybase();
       setDeploymentSuccess(true);
     } catch (err) {
       alert(err.message, "DeployContract");

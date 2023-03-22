@@ -30,7 +30,7 @@ const DeployModal = ({
   setFormData,
   initializable,
   initializableData,
-  abi
+  abi,
 }) => {
   const [generatingAddress, setGeneratingAddress] = useState(false);
   const [startDeploying, setStartDeploying] = useState(false);
@@ -46,8 +46,8 @@ const DeployModal = ({
   });
 
   const { height, width } = useWindowDimensions();
-  
-  console.log('abi is', abi);
+
+  console.log("abi is", abi);
   const computeAddress = async () => {
     try {
       if (salt === "") {
@@ -73,25 +73,36 @@ const DeployModal = ({
     await computeAddress();
   };
 
+  console.log(bytecode);
+
   //polybase function
   const addToPolybase = async () => {
-    
     const contractId = randomstring.generate();
 
     const chainIds = [];
-    for(let chain of formData.multichains) {
-      
+    const chainNames = [...formData.multichains, formData.currentDeployChain];
+    for (let chain of chainNames) {
       //add chains here
       const chainId = randomstring.generate();
-      let chainContract = await createChainRecord(chainId, contractId, chain?.chainName, computedAddress);
-      chainIds.push(chainId);
+      let chainContract = await createChainRecord(
+        chainId,
+        contractId,
+        chain?.chainName,
+        computedAddress
+      );
     }
 
     //owner address needs to be updated
-    let newContract = await createContractRecord(contractId, formData?.contractName, formData?.contractDescription, '0xEDbFce814BB0e816e2A18545262D8A32E32EDA43', formData?.contractPasted, abi, chainIds);
-
+    let newContract = await createContractRecord(
+      contractId,
+      formData?.contractName,
+      formData?.contractDescription,
+      "0xEDbFce814BB0e816e2A18545262D8A32E32EDA43",
+      formData?.contractPasted,
+      JSON.stringify(abi),
+      chainIds
+    );
   };
-
 
   const deployContractHandler = async () => {
     try {
@@ -100,6 +111,8 @@ const DeployModal = ({
         return;
       }
       setStartDeploying(true);
+      //this function will add all the formdata to polbase
+      addToPolybase();
       const abiCoder = new ethers.utils.AbiCoder();
       const saltbytes = abiCoder.encode(["uint256"], [salt]);
       console.log(saltbytes, "saltbytes");
@@ -164,7 +177,10 @@ const DeployModal = ({
                 saltbytes,
                 bytecode,
                 initializable,
-                initializableData
+                initializableData,
+                {
+                  gasPrice: 1000000000,
+                }
               );
             console.log(tx, "tx");
           }
@@ -175,7 +191,8 @@ const DeployModal = ({
           saltbytes,
           bytecode,
           initializable,
-          initializableData
+          initializableData,
+          { gasPrice: 1000000000 }
         );
         console.log(tx, "tx");
         for (let i = 0; i < selectedChains.length; i++) {
@@ -193,15 +210,14 @@ const DeployModal = ({
               saltbytes,
               bytecode,
               initializable,
-              initializableData
+              initializableData,
+              { gasPrice: 1000000000 }
             );
           console.log(tx, "tx");
         }
       }
       await tx.wait();
-      
-      //this function will add all the formdata to polbase
-      addToPolybase();
+
       setDeploymentSuccess(true);
     } catch (err) {
       alert(err.message, "DeployContract");

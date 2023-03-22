@@ -82,7 +82,6 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
             let isChainSelected =
               chainSelected.findIndex((c) => c.chainName === chain.chainName) >=
               0;
-            console.log(isChainSelected, "isChainSelected");
             if (chain.chainName !== formData.currentDeployChain.chainName)
               return (
                 <div

@@ -8,6 +8,7 @@ import AddressComp from '@/components/Address/Address';
 import Details from '@/components/Address/Details';
 import { readChainRecord, readContractRecord } from '../../polybase/queries';
 import Loader from '@/components/Loader/Loader';
+import TransactionAll from '@/components/Transaction/TransactionAll';
 
 const CONTRACT_DATA = [
   {
@@ -57,10 +58,11 @@ const Address = () => {
   // const [showRead, setShowRead] = useState(false);
   // const [showAbi, setShowAbi] = useState(false);
 
-  const [showCode, setShowCode] = useState(true);
+  const [showCode, setShowCode] = useState(false);
   const [showWrite, setShowWrite] = useState(false);
   const [showRead, setShowRead] = useState(false);
   const [showAbi, setShowAbi] = useState(false);
+  const [showTransaction, setShowTransaction] = useState(true);
   const [contractData, setContractData] = useState([]);
   const [alternateContracts, setAlternateContract] = useState([]);
   const [contractInformation, setContractInformation] = useState({});
@@ -126,6 +128,8 @@ const Address = () => {
     setShowCode(false);
     setShowWrite(false);
     setShowAbi(false);
+    setShowTransaction(false);
+
     setShowRead(true);
   };
 
@@ -133,6 +137,8 @@ const Address = () => {
     setShowCode(false);
     setShowAbi(false);
     setShowRead(false);
+    setShowTransaction(false);
+
     setShowWrite(true);
   };
 
@@ -140,6 +146,8 @@ const Address = () => {
     setShowRead(false);
     setShowAbi(false);
     setShowWrite(false);
+    setShowTransaction(false);
+
     setShowCode(true);
   };
 
@@ -147,13 +155,23 @@ const Address = () => {
     setShowCode(false);
     setShowRead(false);
     setShowWrite(false);
+    setShowTransaction(false);
+
     setShowAbi(true);
+  };
+
+  const showTransactionHandler = () => {
+    setShowCode(false);
+    setShowRead(false);
+    setShowWrite(false);
+    setShowAbi(false);
+    setShowTransaction(true);
   };
 
   return (
     <section className="bg-[#111111] min-h-screen py-4">
       {isLoading ? (
-        <Loader/>
+        <Loader />
       ) : (
         <>
           <AddressComp address={address} />
@@ -177,6 +195,14 @@ const Address = () => {
           <div className="bg-[#171717] py-4 px-3 mx-8 mt-4 rounded-md">
             {/* Buttons */}
             <div className="flex gap-4">
+              <p
+                onClick={showTransactionHandler}
+                className={`w-[120px] text-center py-2 rounded-md ${
+                  showTransaction ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
+                } text-white cursor-pointer`}
+              >
+                Transactions
+              </p>
               <p
                 onClick={showReadHandler}
                 className={`w-[100px] text-center py-2 rounded-md ${
@@ -210,6 +236,10 @@ const Address = () => {
                 ABI
               </p>
             </div>
+
+            {showTransaction && contractInformation && (
+              <TransactionAll />
+            )}
 
             {showCode && contractInformation && (
               <Code code={contractInformation?.data?.contractCode} />

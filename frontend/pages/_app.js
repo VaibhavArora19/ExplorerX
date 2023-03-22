@@ -1,12 +1,12 @@
-import "@/styles/globals.css";
+import '@/styles/globals.css';
 
 import {
   EthereumClient,
   w3mConnectors,
   w3mProvider,
-} from "@web3modal/ethereum";
-import { Web3Modal } from "@web3modal/react";
-import { configureChains, createClient, WagmiConfig } from "wagmi";
+} from '@web3modal/ethereum';
+import { Web3Modal } from '@web3modal/react';
+import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import {
   polygonMumbai,
   scrollTestnet,
@@ -14,8 +14,9 @@ import {
   gnosisChiado,
   optimismGoerli,
   zkSyncTestnet,
-} from "wagmi/chains";
-import { Mantle } from "@/constants";
+} from 'wagmi/chains';
+import { Mantle } from '@/constants';
+import Layout from '@/components/Layout/Layout';
 
 const chains = [
   scrollTestnet,
@@ -26,7 +27,7 @@ const chains = [
   zkSyncTestnet,
   Mantle,
 ];
-const projectId = "e4c7b443da64b8536ebe63013642fd28";
+const projectId = 'e4c7b443da64b8536ebe63013642fd28';
 
 const { provider } = configureChains(chains, [w3mProvider({ projectId })]);
 const wagmiClient = createClient({
@@ -40,10 +41,15 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <WagmiConfig client={wagmiClient}>
-        <Component {...pageProps} />{" "}
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </WagmiConfig>
 
-      <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+      <Web3Modal
+        projectId={projectId}
+        ethereumClient={ethereumClient}
+      />
     </>
   );
 }

@@ -7,7 +7,6 @@ import { GiCrossedChains, GiPartyPopper } from 'react-icons/gi';
 const Helper = ({ icon, title, subtitle }) => {
   return (
     <div className="flex items-center gap-6 my-8">
-      {/* <Image src={img} alt={title} width={35} height={60} /> */}
       <>{icon}</>
       <div>
         <h2 className="text-white font-medium mb-1">{title}</h2>

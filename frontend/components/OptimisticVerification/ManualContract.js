@@ -1,82 +1,160 @@
-import ContractInput from "./ContractInput";
-import { useContract, useSigner, useNetwork, useSwitchNetwork } from "wagmi";
-import { optimisticVerificationContract, optimisticVerificationABI} from "@/constants";
-import { useState } from "react";
+import ContractInput from './ContractInput';
+import { useContract, useSigner, useNetwork, useSwitchNetwork } from 'wagmi';
+import {
+  optimisticVerificationContract,
+  optimisticVerificationABI,
+} from '@/constants';
+import { useState } from 'react';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 const ManualContract = () => {
-    const [addresses, setAddresses] = useState([{
-        contractAddress: null,
-        chain: null
-    }]); 
-    const { data: signer } = useSigner();
-    const { chain } = useNetwork();
+  const [showModal, setShowModal] = useState(false);
+  const [contractName, setContractName] = useState('');
+  const [contractDescription, setContractDescription] = useState('');
+  const [addresses, setAddresses] = useState([
+    {
+      contractAddress: null,
+      chain: null,
+    },
+  ]);
+  const { data: signer } = useSigner();
+  const { chain } = useNetwork();
 
-    const contract = useContract({
-        address: optimisticVerificationContract,
-        abi: optimisticVerificationABI,
-        signerOrProvider: signer
+  const contract = useContract({
+    address: optimisticVerificationContract,
+    abi: optimisticVerificationABI,
+    signerOrProvider: signer,
+  });
+
+  const addAddressHandler = (id, updatedAddress, updatedChain) => {
+    let updatedAddresses = addresses;
+
+    updatedAddresses[id] = {
+      contractAddress: updatedAddress,
+      chain: updatedChain,
+    };
+    setAddresses(updatedAddresses);
+  };
+
+  const newAddressHandler = () => {
+    setAddresses((prevState) => {
+      return [...prevState, { contractAddress: null, chain: null }];
     });
+  };
 
+  const submitHandler = async () => {
+    let data = '[';
 
-    
-    const addAddressHandler = (id, updatedAddress, updatedChain) => {
-        let updatedAddresses = addresses;
-
-
-        updatedAddresses[id] = {
-            contractAddress: updatedAddress,
-            chain: updatedChain
-        };
-        setAddresses(updatedAddresses);
+    for (let address of addresses) {
+      data =
+        data +
+        `{address: ${address.contractAddress}, chain: ${address.chain}},`;
     }
 
-    const newAddressHandler = () => {
-        setAddresses((prevState) => {
-            return [...prevState, {contractAddress: null, chain: null}]
-        });
+    data = data + ']';
+
+    let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
+
+    if (chain?.id !== 5) {
+      console.log('here');
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
+      });
+      await contract?.requestData(ancillaryData);
+    } else {
+      await contract?.requestData(ancillaryData);
     }
+  };
 
-    const submitHandler = async () => {
+  return (
+    <div className="text-white font-Poppins bg-[#1E1E1E] relative w-[670px] py-14 px-10 rounded-2xl">
+      <AiOutlineInfoCircle
+        onMouseEnter={() => {
+          setShowModal(true);
+        }}
+        onMouseLeave={() => {
+          setShowModal(false);
+        }}
+        size={24}
+        className="absolute right-10 top-7 text-yellow-400 cursor-pointer"
+      />
+      <h2 className="text-xl font-semibold mb-7">Add Existing contracts</h2>
+      <div className="flex flex-col">
+        <label className="text-sm text-gray-400">Name</label>
+        <input
+          onChange={(e) => {
+            setContractName(e.target.value);
+          }}
+          value={contractName}
+          type="text"
+          placeholder="Price Converter"
+          className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 outline-none mb-6"
+        />
 
-        let data = '[';
+        <label className="text-sm text-gray-400">Description</label>
+        <textarea
+          onChange={(e) => {
+            setContractDescription(e.target.value);
+          }}
+          value={contractDescription}
+          rows={7}
+          maxLength={1000}
+          className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 mb-4 outline-none max-h-[200px]"
+          placeholder="A short description of smart contract"
+        />
 
-        for(let address of addresses) {
-            data = data + `{address: ${address.contractAddress}, chain: ${address.chain}},`
-        }
-
-        data = data + ']';
-
-        let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
-
-        if(chain?.id !== 5) {
-            console.log('here');
-            await window.ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
-              });
-            await contract?.requestData(ancillaryData);
-        }else {
-            await contract?.requestData(ancillaryData);
-        }
-    }
-
-    return (
-        <div>
-            <h1>Select Chains</h1>
-            <div>
-                {addresses.map((_, index) => {
-                    return <ContractInput id={index} addAddress={addAddressHandler}/>
-                })
-                }
-            </div>
-            <div>
-                <button onClick={newAddressHandler}>Add new address</button>
-            </div>
-            <div>
-                <button onClick={submitHandler}>Submit</button>
-            </div>
+        <label className="text-sm text-gray-400 mb-1 mt-3">
+          Add deployed addressess
+        </label>
+        <div className="flex items-center gap-3 relative w-fit">
+          <div className="flex flex-col items-center gap-4">
+            {addresses.map((_, index) => {
+              return (
+                <ContractInput
+                  id={index}
+                  addAddress={addAddressHandler}
+                />
+              );
+            })}
+          </div>
+          <button
+            className="bg-white/70 text-black absolute -right-20 py-3 px-7 text-xl rounded-lg uppercase font-semibold"
+            onClick={newAddressHandler}
+          >
+            +
+          </button>
         </div>
-    )
+      </div>
+
+      <div>
+        <button
+          className="w-full mt-10 bg-black/40 hover:bg-black font-semibold py-4 rounded-xl"
+          onClick={submitHandler}
+        >
+          Submit
+        </button>
+      </div>
+
+      {showModal && (
+        <div className="bg-gray-700/90 py-3 px-4 rounded-md absolute shadow-2xl w-[300px] z-10 top-12 right-14">
+          <h3 className="text-md text-red-300 mb-3">Having trouble?</h3>
+          <p className=" text-left text-sm text-green-200">
+            Deploy your existing contracts on ExplorerX. to track all your
+            transactions & contract details on tip of your fingers.
+          </p>
+
+          <p className="text-yellow-300 font-semibold my-2">Steps to follow:</p>
+
+          <ol className="list-decimal ml-3 text-xs mt-2">
+            <li>Add contract details</li>
+            <li>Select Chain</li>
+            <li>Add address</li>
+          </ol>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ManualContract;

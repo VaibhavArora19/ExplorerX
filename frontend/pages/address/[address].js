@@ -6,7 +6,7 @@ import ReadAll from '@/components/Read/ReadAll';
 import WriteAll from '@/components/Write/WriteAll';
 import AddressComp from '@/components/Address/Address';
 import Details from '@/components/Address/Details';
-import { readChainRecord, readContractRecord } from '../../polybase/queries';
+import { readContractSimilar, readContractDifferent, readChainRecord } from '../../polybase/queries';
 import Loader from '@/components/Loader/Loader';
 import TransactionAll from '@/components/Transaction/TransactionAll';
 
@@ -68,61 +68,128 @@ const Address = () => {
   const [contractInformation, setContractInformation] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  const {chain} = router.query;
+
+
+  const getData = async () => {
+          try {
+
+            //get the data of the current address first
+            const contractRecord = await readContractSimilar(address);
+            
+  
+            const data = [
+              {
+                title: 'Name',
+                value: contractRecord?.data?.name,
+              },
+              {
+                title: 'Description',
+                value: contractRecord?.data?.description,
+              },
+              {
+                title: 'Owner',
+                value: contractRecord?.data?.owner,
+              },
+              {
+                title: 'Current Chain',
+                value: chain,
+              },
+              {
+                title: 'Balance',
+                value: '$102.34',
+              },
+            ];
+            const alternate = [];
+            for(let chain of contractRecord.data.chains) {
+              let obj = {
+                title: chain,
+                value: contractRecord.data.id
+              };
+
+              alternate.push(obj);
+            }
+
+            setContractData(data);
+            setAlternateContract(alternate);
+            setContractInformation(contractRecord);
+            setIsLoading(false);
+
+          }
+          catch(err) {
+             if(err == 'Error: record/not-found error') {
+
+              try {
+              const contractData = await readChainRecord(address);
+
+              const contractId = contractData.data.contractId;
+
+              const contractRecord = await readContractDifferent(contractId);
+              
+                
+            const data = [
+              {
+                title: 'Name',
+                value: contractRecord?.data?.name,
+              },
+              {
+                title: 'Description',
+                value: contractRecord?.data?.description,
+              },
+              {
+                title: 'Owner',
+                value: contractRecord?.data?.owner,
+              },
+              {
+                title: 'Current Chain',
+                value: contractData?.data?.name,
+              },
+              {
+                title: 'Balance',
+                value: '$102.34',
+              },
+            ];
+            
+            let otherChains = [];
+            if (contractRecord) {
+              //then get data of each contract from their reference
+              for (let otherChain of contractRecord?.data?.chains) {
+                let singleChainData = await readChainRecord(otherChain?.id);
+                otherChains.push({
+                  title: singleChainData?.data?.name,
+                  value: singleChainData?.data?.address,
+                });
+              }
+            }
+            setContractData(data);
+            setAlternateContract(otherChains);
+            setContractInformation(contractRecord);
+            setIsLoading(false);
+            }
+            catch(err) {
+
+            }
+          }
+          }
+    }
+
+  console.log('alternate', alternateContracts);
   //useEffect will fetch the contract from polybase using the contract address
   useEffect(() => {
     if (address) {
       (async function () {
-        setIsLoading(true);
-        //get the data of the current address first
-        const chainRecord = await readChainRecord(address);
-
-        //then call the function to get the reference of all the alternate contracts
-        const contractRecord = await readContractRecord(
-          chainRecord?.data?.contractId
-        );
-
-        let otherChains = [];
-        if (contractRecord) {
-          //then get data of each contract from their reference
-          for (let otherChain of contractRecord?.data?.chains) {
-            let singleChainData = await readChainRecord(otherChain?.id);
-            otherChains.push({
-              title: singleChainData?.data?.name,
-              value: singleChainData?.data?.address,
-            });
-          }
-        }
-
-        const data = [
-          {
-            title: 'Name',
-            value: contractRecord?.data?.name,
-          },
-          {
-            title: 'Description',
-            value: contractRecord?.data?.description,
-          },
-          {
-            title: 'Owner',
-            value: contractRecord?.data?.owner,
-          },
-          {
-            title: 'Current Chain',
-            value: chainRecord?.data?.name,
-          },
-          {
-            title: 'Balance',
-            value: '$102.34',
-          },
-        ];
-
-        setContractData(data);
-        setAlternateContract(otherChains);
-        setContractInformation(contractRecord);
         setIsLoading(false);
+
+        await getData();
+
       })();
     }
   }, [address]);
+
+  const showUmaAddresses = () => {
+
+  }
+
 
   const showReadHandler = () => {
     setShowCode(false);
@@ -186,6 +253,7 @@ const Address = () => {
             {alternateContracts.length > 0 && (
               <Details
                 data={alternateContracts}
+                address={address}
                 heading="Deployed on other chains"
                 isAddress={true}
               />

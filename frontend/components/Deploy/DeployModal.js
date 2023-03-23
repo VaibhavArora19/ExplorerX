@@ -6,7 +6,7 @@ import { useContract, useSigner } from "wagmi";
 import { ethers } from "ethers";
 import Confetti from "react-confetti";
 import { useWindowDimensions } from "@/constants/windowSize.js";
-import { createChainRecord, createContractRecord } from "@/polybase/queries";
+import { createContractSimilar } from "@/polybase/queries";
 import randomstring from "randomstring";
 import {
   deployerAbi,
@@ -77,31 +77,43 @@ const DeployModal = ({
 
   //polybase function
   const addToPolybase = async () => {
-    const contractId = randomstring.generate();
+    const contractId = computedAddress;
 
-    const chainIds = [];
-    const chainNames = [...formData.multichains, formData.currentDeployChain];
-    for (let chain of chainNames) {
-      //add chains here
-      const chainId = randomstring.generate();
-      let chainContract = await createChainRecord(
-        chainId,
-        contractId,
-        chain?.chainName,
-        computedAddress
-      );
+    let chains = [];
+
+    for(let chain of formData?.multichains) {
+      chains.push(chain.chainName);
     }
 
-    //owner address needs to be updated
-    let newContract = await createContractRecord(
-      contractId,
-      formData?.contractName,
-      formData?.contractDescription,
-      "0xEDbFce814BB0e816e2A18545262D8A32E32EDA43",
-      formData?.contractPasted,
-      JSON.stringify(abi),
-      chainIds
-    );
+    const data = await createContractSimilar(contractId, formData?.contractName, formData?.contractDescription, "0xEDbFce814BB0e816e2A18545262D8A32E32EDA43",
+    formData?.contractPasted, JSON.stringify(abi), chains);
+
+    console.log('polybase', data);
+
+
+    // const chainIds = [];
+    // const chainNames = [...formData.multichains, formData.currentDeployChain];
+    // for (let chain of chainNames) {
+    //   //add chains here
+    //   const chainId = randomstring.generate();
+    //   let chainContract = await createChainRecord(
+    //     chainId,
+    //     contractId,
+    //     chain?.chainName,
+    //     computedAddress
+    //   );
+    // }
+
+    // //owner address needs to be updated
+    // let newContract = await createContractRecord(
+    //   contractId,
+    //   formData?.contractName,
+    //   formData?.contractDescription,
+    //   "0xEDbFce814BB0e816e2A18545262D8A32E32EDA43",
+    //   formData?.contractPasted,
+    //   JSON.stringify(abi),
+    //   chainIds
+    // );
   };
 
   const deployContractHandler = async () => {

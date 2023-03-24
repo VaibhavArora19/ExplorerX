@@ -31,7 +31,7 @@ export const Mantle = {
   },
 };
 export const optimisticVerificationContract =
-  "0x793937C933Ef636cA18532Ec4152D2eb54df2c71"; //goerli
+  "0x265A2c51Bf99f749a9058e927a8327af0438B5A4"; //goerli
 export const optimisticVerificationABI = [
   {
     inputs: [

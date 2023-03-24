@@ -6,6 +6,10 @@ import {
 } from '@/constants';
 import { useState } from 'react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { createContractDifferent } from '@/polybase/queries';
+import { createChainRecord } from '@/polybase/queries';
+import randomstring from 'randomstring';
+import { useAccount } from 'wagmi';
 
 const ManualContract = () => {
   const [showModal, setShowModal] = useState(false);
@@ -21,6 +25,7 @@ const ManualContract = () => {
   ]);
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
+  const { address } = useAccount();
 
   const contract = useContract({
     address: optimisticVerificationContract,
@@ -45,28 +50,53 @@ const ManualContract = () => {
   };
 
   const submitHandler = async () => {
-    // let data = '[';
+    const contractId = randomstring.generate();
 
-    // for (let address of addresses) {
-    //   data =
-    //     data +
-    //     `{address: ${address.contractAddress}, chain: ${address.chain}},`;
-    // }
+    const chainIds = [];
+    for (let address of addresses) {
+      const response = await createChainRecord(
+        address.contractAddress,
+        contractId,
+        address.chain,
+        address.contractAddress
+      );
+      chainIds.push(response.data.id);
+    }
 
-    // data = data + ']';
+    const newContract = await createContractDifferent(
+      contractId,
+      contractName,
+      contractDescription,
+      address,
+      pastedContract,
+      ABI,
+      chainIds,
+      true,
+      false
+    );
 
-    // let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
+    let data = '[';
 
-    // if (chain?.id !== 5) {
-    //   console.log('here');
-    //   await window.ethereum.request({
-    //     method: 'wallet_switchEthereumChain',
-    //     params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
-    //   });
-    //   await contract?.requestData(ancillaryData);
-    // } else {
-    //   await contract?.requestData(ancillaryData);
-    // }
+    for (let address of addresses) {
+      data =
+        data +
+        `{address: ${address.contractAddress}, chain: ${address.chain}},`;
+    }
+
+    data = data + ']';
+
+    let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
+
+    if (chain?.id !== 5) {
+      console.log('here');
+      await window.ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
+      });
+      await contract?.requestData(ancillaryData);
+    } else {
+      await contract?.requestData(ancillaryData);
+    }
   };
 
   return (

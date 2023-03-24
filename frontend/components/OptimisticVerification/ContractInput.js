@@ -16,6 +16,8 @@ const ContractInput = ({ id, addAddress }) => {
   };
 
   const updateChainHandler = (event) => {
+    if(event.target.value === 'select') return;
+    
     setUpdateChain(event.target.value);
     updateInformation(updateAddress, event.target.value);
   };
@@ -29,6 +31,7 @@ const ContractInput = ({ id, addAddress }) => {
           value={updateChain}
           className="bg-[#2D2D2D] outline-none px-2 rounded-l-lg py-4"
         >
+          <option value="select">Select chain</option>
           <option value="Polygon Mumbai">Polygon</option>
           <option value="Gnosis">Gnosis</option>
           <option value="Scroll">Scroll</option>

@@ -1,14 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { BsArrowDownShort, BsArrowRightShort } from 'react-icons/bs';
+import { useContractWrite, usePrepareContractWrite, useSigner} from 'wagmi'
+import { useRouter } from 'next/router';
 
-const WriteItem = ({ functionName, i, inputs }) => {
+const WriteItem = ({ functionName, i, inputs, abi }) => {
   const [showWriteData, setShowWriteDate] = useState(false);
   const [enteredInput, setEnteredInput] = useState({});
+  const router = useRouter();
+  const {data: signer} = useSigner();
+  const {address} = router.query;
 
-  const writeHandler = (e) => {
+  const { config } = usePrepareContractWrite({
+    address: address,
+    abi: abi,
+    functionName: functionName,
+  })
+  const { data, isLoading, isSuccess, write } = useContractWrite(config)
+
+  const writeHandler = async (e) => {
     e.preventDefault();
 
-    console.log(enteredInput);
+  write?.();
   };
 
   return (

@@ -1,59 +1,69 @@
-//SPDX-License-Identifier: AGPL-3.0-only
+// SPDX-License-Identifier: AGPL-3.0-only
 
-pragma solidity ^0.8.14;
+pragma solidity ^0.8.16;
 
-import "@uma/core/contracts/optimistic-oracle-v2/interfaces/OptimisticOracleV2Interface.sol";
+import "@uma/core/contracts/optimistic-oracle-v3/interfaces/OptimisticOracleV3Interface.sol";
 
-contract OO_GettingStarted {
-    // Create an Optimistic oracle instance at the deployed address on Görli.
-    OptimisticOracleV2Interface oo =
-        OptimisticOracleV2Interface(0xA5B9d8a0B0Fa04Ba71BDD68069661ED5C0848884);
 
-    // Use the yes no idetifier to ask arbitary questions, such as the weather on a particular day.
-    bytes32 identifier = bytes32("YES_OR_NO_QUERY");
+contract OptimisticVerification {
+    // Create an Optimistic Oracle V3 instance at the deployed address on Görli.
+    OptimisticOracleV3Interface oov3 =
+        OptimisticOracleV3Interface(0x9923D42eF695B5dd9911D05Ac944d4cAca3c4EAB);
 
-    uint256 requestTime = 0; // Store the request time so we can re-use it later.
+    bytes public assertedClaim;
+    bytes32 public assertionId;
 
-    bytes ancillaryData;
+    IERC20 bondCurrency = IERC20(0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6);
 
-    // Submit a data request to the Optimistic oracle.
-    function requestData(string memory _ancillaryData) public {
-        // Post the question in ancillary data. Note that this is a simplified form of ancillry data to work as an example. A real
-        // world prodition market would use something slightly more complex and would need to conform to a more robust structure.
-        ancillaryData = bytes(_ancillaryData);
+    bytes32 public constant defaultIdentifier = "YES_OR_NO";
 
-        requestTime = block.timestamp; // Set the request time to the current block time.
-        IERC20 bondCurrency = IERC20(
-            0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6
-        ); // Use Görli WETH as the bond currency.
-        uint256 reward = 0;
+    mapping(string => bytes32) public assertionIdByContractId;
+    
+    function assertTruth(string memory _claim, string memory _contractId) public returns(bytes32){
+        assertedClaim = bytes(_claim);
+        assertionId = oov3.assertTruth(assertedClaim, address(this), address(0), address(0), 5 days, bondCurrency, 0, defaultIdentifier, bytes32(0));
 
-        // Now, make the price request to the Optimistic oracle and set the liveness to 5 days
-        oo.requestPrice(
-            identifier,
-            requestTime,
-            ancillaryData,
-            bondCurrency,
-            reward
-        );
-        oo.setCustomLiveness(identifier, requestTime, ancillaryData, 5 days);
+        assertionIdByContractId[_contractId] = assertionId;
+        return assertionId;
     }
 
-    // Settle the request once it's gone through the liveness period of 5 Days. This acts the finalize the voted on price.
-    function settleRequest() public {
-        oo.settle(address(this), identifier, requestTime, ancillaryData);
+    // Settle the assertion, if it has not been disputed and it has passed the challenge window, and return the result.
+    // result
+    function settleAndGetAssertionResult() public returns (bool) {
+        return oov3.settleAndGetAssertionResult(assertionId);
     }
 
-    // Fetch the resolved value from the Optimistic Oracle that was settled.
-    function getSettledData() public view returns (int256) {
-        return
-            oo
-                .getRequest(
-                    address(this),
-                    identifier,
-                    requestTime,
-                    ancillaryData
-                )
-                .resolvedPrice;
+    // Just return the assertion result. Can only be called once the assertion has been settled.
+    function getAssertionResult(bytes32 _assertionId) public returns (bool) {
+        return oov3.getAssertionResult(_assertionId);
+    }
+
+    function getAssertionResultByContractId(string memory _contractId) public view returns (bool) {
+        bytes32 _assertionId = assertionIdByContractId[_contractId];
+        return oov3.getAssertionResult(_assertionId);
+    }
+
+
+    function settleAndGetAssertionResultByContractId(string memory _contractId) public view returns(bool) {
+        bytes32 _assertionId = assertionIdByContractId[_contractId];
+        return oov3.settleAndGetAssertionResult(_assertionId);
+    }
+
+    // Return the full assertion object contain all information associated with the assertion. Can be called any time.
+    function getAssertion()
+        public
+        view
+        returns (OptimisticOracleV3Interface.Assertion memory)
+    {
+        return oov3.getAssertion(assertionId);
+    }
+
+    function getAssertionByContractId(string memory _contractId) public view returns(OptimisticOracleV3Interface.Assertion memory) {
+        bytes32 _assertionId = assertionIdByContractId[_contractId];
+        return oov3.getAssertion(_assertionId);
+    }
+
+    function getAssertionId(string memory _contractId) public view returns(bytes32) {
+        return assertionIdByContractId[_contractId];
     }
 }

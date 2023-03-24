@@ -3,7 +3,7 @@ const { Polybase } = require("@polybase/client");
 const createSchema = async () => {
 
 const db = new Polybase({
-    defaultNamespace: 'explorerX'
+    defaultNamespace: 'EXplorerX'
 });
 
 const createResponse = await db.applySchema(`
@@ -26,18 +26,51 @@ const createResponse = await db.applySchema(`
     }
 
     @public
-    collection Contracts {
+    collection differentAddress {
+        id: string;
+        name?: string;
+        description?: string;
+        owner: string;
+        contractCode?: string;
+        abi?: string;
+        chains?: Chain[];
+        isUMA: boolean;
+        isSettled: boolean;
+
+
+        @index(id);
+
+        constructor(id: string, name?: string, description?: string, owner: string, contractCode?: string, abi?: string, 
+        chains?: Chain[], isUMA: boolean, isSettled: boolean) {
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.owner = owner;
+            this.contractCode = contractCode;
+            this.abi = abi;
+            this.chains = chains;
+            this.isUMA = isUMA;
+            this.isSettled = isSettled;
+        }
+
+        setSettled(isSettled: boolean) {
+            this.isSettled = isSettled;
+        }
+    }
+
+    @public
+    collection similarAddress {
         id: string;
         name: string;
         description?: string;
         owner: string;
         contractCode: string;
         abi: string;
-        chains?: Chain[];
+        chains?: string[];
 
         @index(id);
 
-    constructor(id: string, name: string, description: string, owner: string, contractCode: string, abi: string, chains: Chain[]) {
+    constructor(id: string, name: string, description: string, owner: string, contractCode: string, abi: string, chains: string[]) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -6,6 +6,10 @@ import {
 } from '@/constants';
 import { useState } from 'react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { createContractDifferent } from '@/polybase/queries';
+import { createChainRecord } from '@/polybase/queries';
+import randomstring from "randomstring";
+import { useAccount } from 'wagmi';
 
 const ManualContract = () => {
   const [showModal, setShowModal] = useState(false);
@@ -21,6 +25,7 @@ const ManualContract = () => {
   ]);
   const { data: signer } = useSigner();
   const { chain } = useNetwork();
+  const { address } = useAccount();
 
   const contract = useContract({
     address: optimisticVerificationContract,
@@ -45,6 +50,19 @@ const ManualContract = () => {
   };
 
   const submitHandler = async () => {
+
+      const contractId = randomstring.generate();
+
+      const chainIds = [];
+      for(let address of addresses) {
+
+        const response = await createChainRecord(address.contractAddress, contractId, address.chain, address.contractAddress);
+        chainIds.push(response.data.id);
+      }
+
+      const newContract = await createContractDifferent(contractId, contractName, contractDescription, address, pastedContract, ABI, chainIds, true, false);
+
+
     let data = '[';
 
     for (let address of addresses) {

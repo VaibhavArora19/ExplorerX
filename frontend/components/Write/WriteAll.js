@@ -22,7 +22,7 @@ const WriteAll = ({abi}) => {
 
       {writeArr.map((item, i) => (
         <>
-          <WriteItem functionName={item.name} i={i} inputs={item.inputs} />
+          <WriteItem functionName={item.name} i={i} inputs={item.inputs} abi={parsedAbi}/>
         </>
       ))}
     </div>

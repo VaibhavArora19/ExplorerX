@@ -12,6 +12,7 @@
     "@next/font": "13.2.4",
     "@openzeppelin/contracts": "^4.8.2",
     "@polybase/client": "^0.3.32",
+    "@react-spring/parallax": "^9.7.1",
     "@web3modal/ethereum": "^2.2.1",
     "@web3modal/react": "^2.2.1",
     "autoprefixer": "^10.4.14",

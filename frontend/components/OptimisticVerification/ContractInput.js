@@ -34,11 +34,14 @@ const ContractInput = ({ id, addAddress }) => {
           <option value="Scroll">Scroll</option>
           <option value="Optimism">Optimism</option>
           <option value="zksync">zkSync</option>
+          <option value="mantle">Mantle</option>
+          <option value="FVM">FVM</option>
+
         </select>
       </div>
       <div>
         <input
-          className="py-4 px-2 bg-[#232323] outline-none w-[400px] text-gray-400 rounded-r-lg  placeholder:text-sm"
+          className="py-4 px-2 bg-[#232323] outline-none w-[420px] text-gray-400 rounded-r-lg  placeholder:text-sm"
           placeholder="Paste address here..."
           onChange={updateAddressHandler}
           value={updateAddress}

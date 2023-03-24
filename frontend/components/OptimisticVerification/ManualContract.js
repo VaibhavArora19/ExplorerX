@@ -11,6 +11,8 @@ const ManualContract = () => {
   const [showModal, setShowModal] = useState(false);
   const [contractName, setContractName] = useState('');
   const [contractDescription, setContractDescription] = useState('');
+  const [pastedContract, setPastedContract] = useState('');
+  const [ABI, setABI] = useState('');
   const [addresses, setAddresses] = useState([
     {
       contractAddress: null,
@@ -68,7 +70,7 @@ const ManualContract = () => {
   };
 
   return (
-    <div className="text-white font-Poppins bg-[#1E1E1E] relative w-[670px] py-14 px-10 rounded-2xl">
+    <div className="text-white font-Poppins bg-[#1E1E1E] mt-16 relative w-[700px] py-14 px-10 rounded-2xl">
       <AiOutlineInfoCircle
         onMouseEnter={() => {
           setShowModal(true);
@@ -98,10 +100,34 @@ const ManualContract = () => {
             setContractDescription(e.target.value);
           }}
           value={contractDescription}
-          rows={7}
+          rows={2}
           maxLength={1000}
           className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 mb-4 outline-none max-h-[200px]"
           placeholder="A short description of smart contract"
+        />
+
+        <label className="text-sm text-gray-400">Contract</label>
+        <textarea
+          onChange={(e) => {
+            setPastedContract(e.target.value);
+          }}
+          value={pastedContract}
+          rows={5}
+          // maxLength={1000}
+          className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 mb-4 outline-none max-h-[200px]"
+          placeholder="Paste your contract here"
+        />
+
+        <label className="text-sm text-gray-400">ABI</label>
+        <textarea
+          onChange={(e) => {
+            setABI(e.target.value);
+          }}
+          value={ABI}
+          rows={3}
+          // maxLength={1000}
+          className="bg-[#2D2D2D] py-2 px-2 border border-gray-700 rounded-md placeholder:text-gray-500 text-gray-300 my-1 mb-4 outline-none max-h-[200px]"
+          placeholder="Paste your ABI here"
         />
 
         <label className="text-sm text-gray-400 mb-1 mt-3">
@@ -119,7 +145,7 @@ const ManualContract = () => {
             })}
           </div>
           <button
-            className="bg-white/70 text-black absolute -right-20 py-3 px-7 text-xl rounded-lg uppercase font-semibold"
+            className="bg-white/70 text-black absolute -right-20 py-3 top-0 px-7 text-xl rounded-lg uppercase font-semibold"
             onClick={newAddressHandler}
           >
             +

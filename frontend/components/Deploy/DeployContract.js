@@ -77,7 +77,7 @@ const DeployContract = ({ setPage, page, formData, setFormData, addData }) => {
     <>
       <p
         onClick={previousPageHandler}
-        className="text-gray-500 flex items-center gap-1 text-sm absolute top-14 left-[23%] cursor-pointer"
+        className="text-gray-500 flex items-center gap-1 text-sm absolute top-24 left-[23%] cursor-pointer"
       >
         <span>
           <BsArrowLeftShort />

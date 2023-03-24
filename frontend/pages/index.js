@@ -6,7 +6,7 @@ import About from '@/components/Home/About';
 import { useEffect, useState } from 'react';
 
 const LandingPage = () => {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  // const [coords, setCoords] = useState({ x: 0, y: 0 });
 
   // useEffect(() => {
   //   const handleWindowMouseMove = (event) => {
@@ -39,16 +39,25 @@ const LandingPage = () => {
           href="/favicon.ico"
         />
       </Head>
+
       <main className="min-h-screen bg-[black]">
-        <Navbar />
         <Parallax pages={4}>
+          {/* <ParallaxLayer
+            sticky={{ start: 0, end: 0.6 }}
+            offset={0}
+            style={{ zIndex: '10' }}
+          >
+            <Navbar />
+          </ParallaxLayer> */}
+
           <ParallaxLayer
             // speed={}
-            sticky={{ start: 0, end: 0.9 }}
+            sticky={{ start: 0, end: 0.6 }}
             offset={0}
             style={{ zIndex: '-10' }}
             // factor={1}
           >
+            {/* <Navbar /> */}
             <Hero />
           </ParallaxLayer>
 

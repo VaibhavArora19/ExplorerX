@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
@@ -35,7 +36,7 @@ const Explorer = () => {
         </button>
       </div> */}
 
-      <div>
+      <div className="relative">
         <div className="flex items-center gap-5 mb-3">
           <input
             onChange={addressChangeHandler}
@@ -50,6 +51,12 @@ const Explorer = () => {
           on ExplorerX
         </h2>
       </div>
+      <Image
+        src="/assets/deploy/explorer.svg"
+        width={900}
+        height={200}
+        className="absolute bottom-0 left-[50%] -translate-x-[50%]"
+      />
     </div>
   );
 };

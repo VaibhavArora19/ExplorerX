@@ -71,7 +71,7 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
   console.log(chainSelected, "chainSelected");
 
   return (
-    <div className="text-white w-[800px] bg-[#1E1E1E] py-10 px-10 rounded-2xl border border-gray-700">
+    <div className="text-white w-[800px] bg-[#1E1E1E] py-10  px-10 rounded-2xl border border-gray-700">
       <h2 className="text-2xl font-semibold mb-7">Multichain</h2>
 
       <form className="flex flex-col">

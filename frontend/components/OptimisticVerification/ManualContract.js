@@ -45,28 +45,28 @@ const ManualContract = () => {
   };
 
   const submitHandler = async () => {
-    let data = '[';
+    // let data = '[';
 
-    for (let address of addresses) {
-      data =
-        data +
-        `{address: ${address.contractAddress}, chain: ${address.chain}},`;
-    }
+    // for (let address of addresses) {
+    //   data =
+    //     data +
+    //     `{address: ${address.contractAddress}, chain: ${address.chain}},`;
+    // }
 
-    data = data + ']';
+    // data = data + ']';
 
-    let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
+    // let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
 
-    if (chain?.id !== 5) {
-      console.log('here');
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
-      });
-      await contract?.requestData(ancillaryData);
-    } else {
-      await contract?.requestData(ancillaryData);
-    }
+    // if (chain?.id !== 5) {
+    //   console.log('here');
+    //   await window.ethereum.request({
+    //     method: 'wallet_switchEthereumChain',
+    //     params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
+    //   });
+    //   await contract?.requestData(ancillaryData);
+    // } else {
+    //   await contract?.requestData(ancillaryData);
+    // }
   };
 
   return (

@@ -31,14 +31,14 @@ const About = () => {
             Deploy on <br /> Multichain
           </h2>
 
-          <p className="text-md font-Poppins  w-[800px] text-gray-500 mt-4">
-            Tired of writing scripts and tests for deploying your
-            smartcontracts?
+          <p className="text-lg font-Lato  w-[800px] text-gray-500 mt-4">
+            Tired of managing different address of same contracts over multiple
+            chains?
           </p>
 
-          <p className="text-md font-Poppins  w-[500px] text-gray-500 mt-1 ">
+          <p className="text-md font-Poppins  w-[500px] text-gray-500 mt-2 ">
             Use our Deployer to deploy your smartcontracts on not only one but
-            multiple chain at once!
+            multiple chain, that also with only one contract address!
           </p>
 
           <button

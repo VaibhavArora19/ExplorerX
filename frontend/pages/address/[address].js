@@ -171,12 +171,14 @@ const Address = () => {
                   title: singleChainData?.data?.name,
                   value: singleChainData?.data?.address,
                 });
-
-                if(check.test(chain)) {
-                  setIsDeployed(true);
-                }
               }
             }
+            const check = new RegExp(router.query.chain, 'gi');
+            otherChains.map((singleChain) => {
+              if(check.test(singleChain.title)) {
+                setIsDeployed(true);
+              }
+            })
             setContractData(data);
             setAlternateContract(otherChains);
             setContractInformation(contractRecord);

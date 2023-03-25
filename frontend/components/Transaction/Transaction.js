@@ -1,5 +1,6 @@
 import { addressShortner } from '@/utils/addressShortner';
 import React from 'react';
+import { ethers } from 'ethers';
 
 const Transaction = ({ block, methodId, to, from, txHash, value }) => {
   return (
@@ -23,7 +24,7 @@ const Transaction = ({ block, methodId, to, from, txHash, value }) => {
 
         <p className="flex-[0.2]  font-semibold">
           <span className="text-green-300">$ </span>
-          {value}{' '}
+          {ethers.utils.formatEther(value)}{' '}
         </p>
       </div>
   );

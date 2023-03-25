@@ -9,6 +9,8 @@ import Details from '@/components/Address/Details';
 import { readContractSimilar, readContractDifferent, readChainRecord } from '../../polybase/queries';
 import Loader from '@/components/Loader/Loader';
 import TransactionAll from '@/components/Transaction/TransactionAll';
+import { useContract, useSigner } from "wagmi";
+import { optimisticVerificationContract, optimisticVerificationABI } from '@/constants';
 
 const CONTRACT_DATA = [
   {
@@ -67,6 +69,12 @@ const Address = () => {
   const [alternateContracts, setAlternateContract] = useState([]);
   const [contractInformation, setContractInformation] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const {data: signer} = useSigner();
+  const contract = useContract({
+    address: optimisticVerificationContract,
+    abi: optimisticVerificationABI,
+    signerOrProvider: signer
+  })
 
   const {chain} = router.query;
 
@@ -173,7 +181,6 @@ const Address = () => {
           }
     }
 
-  console.log('alternate', alternateContracts);
   //useEffect will fetch the contract from polybase using the contract address
   useEffect(() => {
     if (address) {

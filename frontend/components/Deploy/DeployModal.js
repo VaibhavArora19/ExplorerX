@@ -47,7 +47,6 @@ const DeployModal = ({
 
   const { height, width } = useWindowDimensions();
 
-  console.log("abi is", abi);
   const computeAddress = async () => {
     try {
       if (salt === "") {
@@ -70,10 +69,9 @@ const DeployModal = ({
       return;
     }
     setGeneratingAddress(true);
-    await computeAddress();
+    computeAddress();
   };
 
-  console.log(bytecode);
 
   //polybase function
   const addToPolybase = async () => {
@@ -123,7 +121,7 @@ const DeployModal = ({
         return;
       }
       setStartDeploying(true);
-      //this function will add all the formdata to polbase
+      //this function will add all the formdata to polybase
       addToPolybase();
       const abiCoder = new ethers.utils.AbiCoder();
       const saltbytes = abiCoder.encode(["uint256"], [salt]);

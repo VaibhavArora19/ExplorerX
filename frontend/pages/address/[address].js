@@ -64,6 +64,7 @@ const Address = () => {
   const [showWrite, setShowWrite] = useState(false);
   const [showRead, setShowRead] = useState(false);
   const [showAbi, setShowAbi] = useState(false);
+  const [isDeployed, setIsDeployed] = useState(false);
   const [showTransaction, setShowTransaction] = useState(true);
   const [contractData, setContractData] = useState([]);
   const [alternateContracts, setAlternateContract] = useState([]);
@@ -85,7 +86,7 @@ const Address = () => {
             //get the data of the current address first
             const contractRecord = await readContractSimilar(address);
             
-  
+            const check = new RegExp(router.query.chain, 'gi');
             const data = [
               {
                 title: 'Name',
@@ -110,6 +111,9 @@ const Address = () => {
             ];
             const alternate = [];
             for(let chain of contractRecord.data.chains) {
+              if(check.test(chain)) {
+                setIsDeployed(true);
+              }
               let obj = {
                 title: chain,
                 value: contractRecord.data.id
@@ -167,6 +171,10 @@ const Address = () => {
                   title: singleChainData?.data?.name,
                   value: singleChainData?.data?.address,
                 });
+
+                if(check.test(chain)) {
+                  setIsDeployed(true);
+                }
               }
             }
             setContractData(data);
@@ -244,7 +252,7 @@ const Address = () => {
 
   return (
     <section className="bg-[#111111] min-h-screen py-4">
-      {isLoading ? (
+      {(!isDeployed || isLoading) ? (
         <Loader />
       ) : (
         <>

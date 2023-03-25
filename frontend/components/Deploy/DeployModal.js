@@ -79,7 +79,8 @@ const DeployModal = ({
 
     let chains = [];
 
-    for(let chain of formData?.multichains) {
+    const chainNames = [...formData.multichains, formData.currentDeployChain];
+    for(let chain of chainNames) {
       chains.push(chain.chainName);
     }
 

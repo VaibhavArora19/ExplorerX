@@ -185,7 +185,7 @@ const Address = () => {
   useEffect(() => {
     if (address) {
       (async function () {
-        setIsLoading(true);
+        setIsLoading(false);
 
         await getData();
 

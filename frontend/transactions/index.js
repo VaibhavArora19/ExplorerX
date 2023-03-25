@@ -39,7 +39,7 @@ export const getPolygonABI = async (contractAddress) => {
 
 export const getGnosisTransactions = async (contractAddress) => {
   const data = await fetch(`
-        https://blockscout.com/gnosis/chiado/api?module=contract&action=txlist&address=${contractAddress}
+        https://blockscout.com/gnosis/chiado/api?module=account&action=txlist&address=${contractAddress}
     `);
 
   const response = await data.json();

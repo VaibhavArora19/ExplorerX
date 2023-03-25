@@ -54,14 +54,12 @@ const TransactionAll = ({transactionsProp}) => {
 
   const { address, chain } = router.query;
 
-  useEffect(() => {
-
-    (async function() {
-      const polygon = new RegExp('polygon', 'gi');
+  const getTransactions = async () => {
+    const polygon = new RegExp('polygon', 'gi');
       const mumbai = new RegExp('mumbai', 'gi');
       const optimism = new RegExp('optim', 'gi');
       const gnosis = new RegExp('gnosis', 'gi');
-      const chiado = new RegExp('chiadi', 'gi');
+      const chiado = new RegExp('chiado', 'gi');
       const sepolia = new RegExp('sepolia', 'gi');
       const mantle = new RegExp('mantle', 'gi');
       const scroll = new RegExp('scroll', 'gi');
@@ -79,29 +77,36 @@ const TransactionAll = ({transactionsProp}) => {
       }else if(gnosis.test(chain) || chiado.test(chain)) {
         //not working will check tommorrow
         const data = await getGnosisTransactions(address);
+        setTransactions(data.result.slice(0,15));
 
       }else if(sepolia.test(chain)) {
         const data = await getSepoliaTransactions(address);
         setTransactions(data.result.slice(0, 15));
+        console.log(data);
 
       //last 3 arent't checked
       }else if(scroll.test(chain)) {
         const data = await getScrollTransactions(address);
+        setTransactions(data.result.slice(0, 15));
         console.log(data);
       
       }else if(mantle.test(chain)) {
         const data = await getMantleTransactions(address);
+        setTransactions(data.result.slice(0, 15));
         console.log(data);
 
       }else if(zksync.test(chain)) {
         const data = await getzkSyncTransactions(address);
+        setTransactions(data.result.slice(0, 15));
         console.log(data);
       }
 
+  }
 
-    })();
 
-  }, []);
+  useEffect(() => {
+      getTransactions();
+  }, [address, chain]);
 
   return (
     <div>

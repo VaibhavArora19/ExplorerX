@@ -1,5 +1,5 @@
 import ContractInput from './ContractInput';
-import { useContract, useSigner, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useContract, useSigner, useNetwork } from 'wagmi';
 import {
   optimisticVerificationContract,
   optimisticVerificationABI,
@@ -93,9 +93,9 @@ const ManualContract = () => {
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
       });
-      await contract?.requestData(ancillaryData);
+      await contract?.assertTruth(ancillaryData, contractId);
     } else {
-      await contract?.requestData(ancillaryData);
+      await contract?.assertTruth(ancillaryData, contractId);
     }
   };
 

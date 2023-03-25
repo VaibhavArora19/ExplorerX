@@ -26,13 +26,7 @@ const LandingPage = () => {
 
       <main className="min-h-screen bg-[black]">
         <Parallax pages={5}>
-          <ParallaxLayer
-            sticky={{ start: 0, end: 0.6 }}
-            offset={0}
-            style={{ zIndex: '10' }}
-          >
-            <Navbar isLanding={true} />
-          </ParallaxLayer>
+          <Navbar isLanding={true} />
 
           <ParallaxLayer
             sticky={{ start: 0, end: 0.6 }}

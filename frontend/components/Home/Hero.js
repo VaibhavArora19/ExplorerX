@@ -18,7 +18,7 @@ const Hero = () => {
         <Image
           height={650}
           width={650}
-          className="absolute -top-36 -right-10 -z-[1]"
+          className="absolute -top-36 -right-10 -z-[10]"
           src="/assets/deploy/hero.png"
         />
       </div>

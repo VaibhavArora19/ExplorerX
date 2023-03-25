@@ -6,11 +6,19 @@ import ReadAll from '@/components/Read/ReadAll';
 import WriteAll from '@/components/Write/WriteAll';
 import AddressComp from '@/components/Address/Address';
 import Details from '@/components/Address/Details';
-import { readContractSimilar, readContractDifferent, readChainRecord } from '../../polybase/queries';
+import {
+  readContractSimilar,
+  readContractDifferent,
+  readChainRecord,
+} from '../../polybase/queries';
 import Loader from '@/components/Loader/Loader';
 import TransactionAll from '@/components/Transaction/TransactionAll';
-import { useContract, useSigner } from "wagmi";
-import { optimisticVerificationContract, optimisticVerificationABI } from '@/constants';
+import { useContract, useSigner } from 'wagmi';
+import {
+  optimisticVerificationContract,
+  optimisticVerificationABI,
+} from '@/constants';
+import Multichains from '@/components/Address/Multichains';
 
 const CONTRACT_DATA = [
   {
@@ -60,126 +68,116 @@ const Address = () => {
   // const [showRead, setShowRead] = useState(false);
   // const [showAbi, setShowAbi] = useState(false);
 
-  const [showCode, setShowCode] = useState(false);
+  const [showCode, setShowCode] = useState(true);
   const [showWrite, setShowWrite] = useState(false);
   const [showRead, setShowRead] = useState(false);
   const [showAbi, setShowAbi] = useState(false);
-  const [showTransaction, setShowTransaction] = useState(true);
+  const [showTransaction, setShowTransaction] = useState(false);
   const [contractData, setContractData] = useState([]);
   const [alternateContracts, setAlternateContract] = useState([]);
   const [contractInformation, setContractInformation] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const {data: signer} = useSigner();
+  const { data: signer } = useSigner();
   const contract = useContract({
     address: optimisticVerificationContract,
     abi: optimisticVerificationABI,
-    signerOrProvider: signer
-  })
+    signerOrProvider: signer,
+  });
 
-  const {chain} = router.query;
-
+  const { chain } = router.query;
 
   const getData = async () => {
-          try {
+    try {
+      //get the data of the current address first
+      const contractRecord = await readContractSimilar(address);
 
-            //get the data of the current address first
-            const contractRecord = await readContractSimilar(address);
-            
-  
-            const data = [
-              {
-                title: 'Name',
-                value: contractRecord?.data?.name,
-              },
-              {
-                title: 'Description',
-                value: contractRecord?.data?.description,
-              },
-              {
-                title: 'Owner',
-                value: contractRecord?.data?.owner,
-              },
-              {
-                title: 'Current Chain',
-                value: chain,
-              },
-              {
-                title: 'Balance',
-                value: '$102.34',
-              },
-            ];
-            const alternate = [];
-            for(let chain of contractRecord.data.chains) {
-              let obj = {
-                title: chain,
-                value: contractRecord.data.id
-              };
+      const data = [
+        {
+          title: 'Name',
+          value: contractRecord?.data?.name,
+        },
+        {
+          title: 'Description',
+          value: contractRecord?.data?.description,
+        },
+        {
+          title: 'Owner',
+          value: contractRecord?.data?.owner,
+        },
+        {
+          title: 'Current Chain',
+          value: chain.toUpperCase(),
+        },
+        {
+          title: 'Balance',
+          value: '$102.34',
+        },
+      ];
+      const alternate = [];
+      for (let chain of contractRecord.data.chains) {
+        let obj = {
+          title: chain,
+          value: contractRecord.data.id,
+        };
 
-              alternate.push(obj);
-            }
+        alternate.push(obj);
+      }
 
-            setContractData(data);
-            setAlternateContract(alternate);
-            setContractInformation(contractRecord);
-            setIsLoading(false);
+      setContractData(data);
+      setAlternateContract(alternate);
+      setContractInformation(contractRecord);
+      setIsLoading(false);
+    } catch (err) {
+      if (err == 'Error: record/not-found error') {
+        try {
+          const contractData = await readChainRecord(address);
 
-          }
-          catch(err) {
-             if(err == 'Error: record/not-found error') {
+          const contractId = contractData.data.contractId;
 
-              try {
-              const contractData = await readChainRecord(address);
+          const contractRecord = await readContractDifferent(contractId);
 
-              const contractId = contractData.data.contractId;
+          const data = [
+            {
+              title: 'Name',
+              value: contractRecord?.data?.name,
+            },
+            {
+              title: 'Description',
+              value: contractRecord?.data?.description,
+            },
+            {
+              title: 'Owner',
+              value: contractRecord?.data?.owner,
+            },
+            {
+              title: 'Current Chain',
+              value: contractData?.data?.name,
+            },
+            {
+              title: 'Balance',
+              value: '$102.34',
+            },
+          ];
 
-              const contractRecord = await readContractDifferent(contractId);
-              
-                
-            const data = [
-              {
-                title: 'Name',
-                value: contractRecord?.data?.name,
-              },
-              {
-                title: 'Description',
-                value: contractRecord?.data?.description,
-              },
-              {
-                title: 'Owner',
-                value: contractRecord?.data?.owner,
-              },
-              {
-                title: 'Current Chain',
-                value: contractData?.data?.name,
-              },
-              {
-                title: 'Balance',
-                value: '$102.34',
-              },
-            ];
-            
-            let otherChains = [];
-            if (contractRecord) {
-              //then get data of each contract from their reference
-              for (let otherChain of contractRecord?.data?.chains) {
-                let singleChainData = await readChainRecord(otherChain?.id);
-                otherChains.push({
-                  title: singleChainData?.data?.name,
-                  value: singleChainData?.data?.address,
-                });
-              }
-            }
-            setContractData(data);
-            setAlternateContract(otherChains);
-            setContractInformation(contractRecord);
-            setIsLoading(false);
-            }
-            catch(err) {
-
+          let otherChains = [];
+          if (contractRecord) {
+            //then get data of each contract from their reference
+            for (let otherChain of contractRecord?.data?.chains) {
+              let singleChainData = await readChainRecord(otherChain?.id);
+              otherChains.push({
+                title: singleChainData?.data?.name,
+                value: singleChainData?.data?.address,
+              });
             }
           }
-          }
+          setContractData(data);
+          setAlternateContract(otherChains);
+          setContractInformation(contractRecord);
+          setIsLoading(false);
+        } catch (err) {}
+      }
     }
+  };
 
   //useEffect will fetch the contract from polybase using the contract address
   useEffect(() => {
@@ -188,15 +186,13 @@ const Address = () => {
         setIsLoading(false);
 
         await getData();
-
       })();
     }
-  }, [address]);
+  }, [address, chain]);
 
-  const showUmaAddresses = () => {
+  const showUmaAddresses = () => {};
 
-  }
-
+  console.log(alternateContracts);
 
   const showReadHandler = () => {
     setShowCode(false);
@@ -257,13 +253,20 @@ const Address = () => {
                 heading="Contract details"
               />
             )}
-            {alternateContracts.length > 0 && (
+
+            {/* {show if UMA boolean is true} */}
+            {/* {alternateContracts.length > 0 && (
               <Details
                 data={alternateContracts}
                 address={address}
                 heading="Deployed on other chains"
                 isAddress={true}
               />
+            )} */}
+
+            {/* {show if uma Boolean is false} */}
+            {alternateContracts.length > 0 && (
+              <Multichains alternateContracts={alternateContracts} />
             )}
           </div>
 
@@ -273,7 +276,9 @@ const Address = () => {
               <p
                 onClick={showTransactionHandler}
                 className={`w-[120px] text-center py-2 rounded-md ${
-                  showTransaction ? 'bg-[#424242]' : 'bg-[#242424] hover:bg-[#424242]'
+                  showTransaction
+                    ? 'bg-[#424242]'
+                    : 'bg-[#242424] hover:bg-[#424242]'
                 } text-white cursor-pointer`}
               >
                 Transactions
@@ -313,9 +318,7 @@ const Address = () => {
             </div>
 
             {/* pass transactions arr */}
-            {showTransaction && contractInformation && (
-              <TransactionAll />
-            )}
+            {showTransaction && contractInformation && <TransactionAll />}
 
             {showCode && contractInformation && (
               <Code code={contractInformation?.data?.contractCode} />

@@ -45,8 +45,10 @@ const Navbar = ({ bgColor, isLanding = false }) => {
         </div>
 
         {isLanding && (
-          <button className=" flex items-center gap-2 justify-center hover:scale-110 delay-100 transition-all ease-in-out rounded-full py-4 bg-white w-[200px] font-semibold font-Poppins">
-            Get Started{' '}
+          <button onClick={() => {
+            router.push('/explorer')
+          }} className=" flex items-center gap-2 justify-center hover:scale-110 delay-100 transition-all ease-in-out rounded-full py-4 bg-white w-[200px] font-semibold font-Poppins">
+            Get Started
             <span>
               <AiOutlineArrowRight />
             </span>

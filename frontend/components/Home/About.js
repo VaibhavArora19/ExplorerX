@@ -86,14 +86,14 @@ const About = () => {
       <div className="flex flex-row-reverse  my-72 gap-10">
         <div className="flex-[0.2] h-[400px]">
           <h2 className="text-7xl font-Poppins tracking-wide leading-[90px] flex gap-4 items-center uppercase font-semibold">
-            Explore Contracts <br />
+            Explore Contracts
           </h2>
 
           <p className="text-md font-Poppins   text-gray-500 mt-4">
             Got bored of using average looking blockchain explorers?
           </p>
 
-          <p className="text-md font-Poppins  w-[500px] text-gray-500 mt-1 ">
+          <p className="text-md font-Poppins  w-[470px] text-gray-500 mt-1 ">
             Try our Explorer to manage all the transactions, contracts, ABIs,
             and much more deployed by our deployer.
           </p>
@@ -111,7 +111,7 @@ const About = () => {
           </button>
         </div>
 
-        <div className="flex-[0.8] relative">
+        <div className="flex-[0.9] relative">
           <Image
             src="/assets/deploy/galaxy.jpg"
             width={1200}

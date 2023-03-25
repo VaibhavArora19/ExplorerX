@@ -5,7 +5,7 @@ import React from 'react';
 const Footer = () => {
   const router = useRouter();
   return (
-    <footer className="w-full text-white px-20 mt-[200px]">
+    <div className="w-full text-white px-20 mt-[150px]">
       <h2 className="text-3xl font-semibold mb-10">ExplorerX.</h2>
       <p className="text-gray-400 mb-12">
         ExplorerX is currrently built for Scaling Ethereum Hackathon and should
@@ -51,7 +51,7 @@ const Footer = () => {
           </li>
         </ul>
       </div>
-    </footer>
+    </div>
   );
 };
 

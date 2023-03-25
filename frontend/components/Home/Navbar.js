@@ -1,12 +1,21 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 
 const Navbar = ({ bgColor, isLanding = false }) => {
+  const router = useRouter();
   return (
     <nav className={`pt-6 ${bgColor} w-full px-20 z-10 fixed`}>
       <ul className="flex justify-between items-center font-Poppins ">
-        <h2 className="text-3xl font-semibold font-Lora text-white">EX.</h2>
+        <h2
+          onClick={() => {
+            router.push('/');
+          }}
+          className="text-3xl font-semibold font-Lora text-white cursor-pointer"
+        >
+          EX.
+        </h2>
         <div className="flex items-center gap-20 text-white">
           <Link
             className="hover:scale-105"

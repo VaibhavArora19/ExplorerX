@@ -8,7 +8,7 @@ const About = () => {
   const router = useRouter();
 
   return (
-    <section className="bg-white min-h-screen rounded-t-[80px] py-[200px] px-36 flex flex-col">
+    <section className="bg-white min-h-screen rounded-t-[80px] pt-[200px] pb-[100px] px-36 flex flex-col">
       <div className="relative ">
         <h2 className="text-6xl text-[#1e1e1e] w-[1200px] text-center font-light font-Poppins z-10  absolute left-[50%] -translate-x-[50%]">
           Making Layer2 Onboarding easier!
@@ -24,76 +24,7 @@ const About = () => {
         </p>
       </div>
 
-      {/* <div className="mt-28 flex gap-20 px-16 ">
-        <div className="flex-[0.5]">
-          <h2 className="text-4xl font-semibold text-[#2d2d2d] font-Poppins  leading-[60px]">
-            Deploy your smartcontract on Multiple{' '}
-            <span className="text-purple-400">Layer2</span> chains!
-          </h2>
-          <p className="text-sm font-medium w-[500px] text-gray-500 mt-4">
-            Tired of writing scripts and tests for deploying your
-            smartcontracts?
-            <br /> Use our Deployer to deploy your smartcontracts on not only
-            one but multiple chain at once!
-          </p>
-
-          <button className="mt-10 flex items-center gap-2 justify-center hover:gap-4 delay-100 transition-all ease-in-out rounded-full py-4 bg-black w-[200px] text-white font-semibold font-Poppins">
-            Deploy here
-            <span>
-              <AiOutlineArrowRight />
-            </span>
-          </button>
-        </div>
-        <div className="flex-[0.5]">
-          
-        </div>
-      </div>
-
-      <div className="mt-28 flex flex-row-reverse gap-20 px-16">
-        <div className="flex-[0.5]">
-          <h2 className="text-4xl font-semibold text-[#2d2d2d] font-Poppins  leading-[60px]">
-            Manage your <span className="text-red-300">Transactions</span> and
-            contracts with our own Explorer
-          </h2>
-          <p className="text-sm font-medium w-[500px] text-gray-500 mt-4">
-            Get all the Transactions, code, ABIs, contract information,
-            addressess & what not with our multichain explorer! Excited? Give it
-            a shot right now.
-          </p>
-
-          <button className="mt-10 flex items-center gap-2 justify-center hover:gap-4 delay-100 transition-all ease-in-out rounded-full py-4 bg-black w-[200px] text-white font-semibold font-Poppins">
-            Try Explorer
-            <span>
-              <AiOutlineArrowRight />
-            </span>
-          </button>
-        </div>
-        <div className="flex-[0.5]"></div>
-      </div>
-
-      <div className="mt-28 flex gap-20 px-16">
-        <div className="flex-[0.5]">
-          <h2 className="text-4xl font-semibold text-[#2d2d2d] font-Poppins  leading-[60px]">
-            <span className="text-yellow-400">Add & Manage</span> your existing
-            contracts with integrated <br /> UMA protocol
-          </h2>
-          <p className="text-sm font-medium w-[500px] text-gray-500 mt-4">
-            Bored of using old looking explorers?{' '}
-          </p>
-          <p className="text-sm font-medium w-[500px] text-gray-500 mt-2">
-            Add your existing contracts on our explorer and manage everything in
-            a single place without any restrictions.
-          </p>
-          <button className="mt-10 flex items-center gap-2 justify-center hover:gap-4 delay-100 transition-all ease-in-out rounded-full py-4 bg-black w-[200px] text-white font-semibold font-Poppins">
-            Add Contract
-            <span>
-              <AiOutlineArrowRight />
-            </span>
-          </button>
-        </div>
-        <div className="flex-[0.5]"></div>
-      </div> */}
-
+      {/* Deploy */}
       <>
         <div className="mt-72">
           <h2 className="text-7xl font-Poppins tracking-wide leading-[90px] flex gap-4 items-center uppercase font-semibold">
@@ -150,6 +81,71 @@ const About = () => {
           />
         </div>
       </>
+
+      {/* Explorer */}
+      <div className="flex flex-row-reverse  my-72 gap-10">
+        <div className="flex-[0.2] h-[400px]">
+          <h2 className="text-7xl font-Poppins tracking-wide leading-[90px] flex gap-4 items-center uppercase font-semibold">
+            Explore Contracts <br />
+          </h2>
+
+          <p className="text-md font-Poppins   text-gray-500 mt-4">
+            Got bored of using average looking blockchain explorers?
+          </p>
+
+          <p className="text-md font-Poppins  w-[500px] text-gray-500 mt-1 ">
+            Try our Explorer to manage all the transactions, contracts, ABIs,
+            and much more deployed by our deployer.
+          </p>
+
+          <button
+            onClick={() => {
+              router.push('/explorer');
+            }}
+            className="mt-10 flex items-center gap-2 justify-center hover:gap-4 delay-100 transition-all ease-in-out rounded-full py-4 bg-black w-[200px] text-white font-semibold font-Poppins"
+          >
+            Try Explorer
+            <span>
+              <AiOutlineArrowRight />
+            </span>
+          </button>
+        </div>
+
+        <div className="flex-[0.8] relative">
+          <Image
+            src="/assets/deploy/galaxy.jpg"
+            width={1200}
+            height={600}
+            alt="deploy"
+            className="rounded-md absolute -bottom-60 -left-20 hover:scale-105 hover:-rotate-12 transition-all ease-out"
+          />
+        </div>
+      </div>
+
+      <div className="mt-60 ">
+        <h2 className="text-7xl font-Poppins text-center tracking-wide leading-[90px]  uppercase font-semibold">
+          Add Existing Contracts!
+        </h2>
+        <p className="text-md font-Poppins text-center mt-10  text-gray-500">
+          Manage your existing contracts with our integrated UMA protocol.
+        </p>
+        <p className="text-md font-Poppins text-center  text-gray-500 mt-1 ">
+          Add all your existing multichain contracts and access them easily with
+          our explorer. So why wait? Let's get started
+        </p>
+
+        <button
+          onClick={() => {
+            router.push('/addContract');
+          }}
+          className="mt-10 flex items-center gap-2 mx-auto justify-center hover:gap-4 delay-100 transition-all ease-in-out rounded-full py-4 bg-black w-[200px] text-white font-semibold font-Poppins"
+        >
+          Add Contract
+          <span>
+            <AiOutlineArrowRight />
+          </span>
+        </button>
+      </div>
     </section>
   );
 };

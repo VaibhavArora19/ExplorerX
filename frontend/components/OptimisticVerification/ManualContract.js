@@ -1,5 +1,4 @@
 import ContractInput from './ContractInput';
-import { useContract, useSigner, useNetwork } from 'wagmi';
 import {
   optimisticVerificationContract,
   optimisticVerificationABI,
@@ -10,6 +9,7 @@ import { createContractDifferent } from '@/polybase/queries';
 import { createChainRecord } from '@/polybase/queries';
 import randomstring from 'randomstring';
 import { useAccount } from 'wagmi';
+import { ethers } from 'ethers';
 
 const ManualContract = () => {
   const [showModal, setShowModal] = useState(false);
@@ -23,15 +23,8 @@ const ManualContract = () => {
       chain: null,
     },
   ]);
-  const { data: signer } = useSigner();
-  const { chain } = useNetwork();
   const { address } = useAccount();
 
-  const contract = useContract({
-    address: optimisticVerificationContract,
-    abi: optimisticVerificationABI,
-    signerOrProvider: signer,
-  });
 
   const addAddressHandler = (id, updatedAddress, updatedChain) => {
     let updatedAddresses = addresses;
@@ -64,17 +57,22 @@ const ManualContract = () => {
 
     let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
 
-    // if (chain?.id !== 5) {
-    //   console.log('here');
-    //   await window.ethereum.request({
-    //     method: 'wallet_switchEthereumChain',
-    //     params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
-    //   });
-    //   await contract?.assertTruth(ancillaryData, contractId);
-    // } else {
-    // }
-    console.log(contract);
-    await contract?.assertTruth(ancillaryData, contractId);
+    await ethereum.request({ method: 'eth_requestAccounts' });
+
+    const chainId = await ethereum.request({ method: "eth_chainId" });
+
+    if(chainId !== "0x5") {
+      await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
+        });
+      }
+
+    const library = new ethers.providers.Web3Provider(window.ethereum);
+    const getSigner = library.getSigner();
+
+    const contract = new ethers.Contract(optimisticVerificationContract, optimisticVerificationABI, getSigner);
+    await contract.assertTruth(ancillaryData, contractId);
 
     const chainIds = [];
     for (let address of addresses) {

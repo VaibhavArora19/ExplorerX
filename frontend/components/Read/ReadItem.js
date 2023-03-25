@@ -40,9 +40,11 @@ const ReadItem = ({ i, value, datatype, functionName, inputs, abi }) => {
   };
 
   const readDataHandler = async () => {
-
-      if(datatype.includes('uint')) {
-        setResult(contractRead.data.toString());
+      
+    await ethereum.request({ method: 'eth_requestAccounts' });
+    
+      if(datatype.includes('int')) {
+        setResult(contractRead?.data?.toString());
       }else {
         setResult(contractRead.data);
       }

@@ -21,7 +21,7 @@ const WriteItem = ({ functionName, i, inputs, abi }) => {
 
   const writeHandler = async (e) => {
     e.preventDefault();
-
+    await ethereum.request({ method: 'eth_requestAccounts' });
     write?.();
   };
 

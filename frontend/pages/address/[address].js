@@ -68,15 +68,15 @@ const Address = () => {
   // const [showRead, setShowRead] = useState(false);
   // const [showAbi, setShowAbi] = useState(false);
 
-  const [showCode, setShowCode] = useState(true);
+  const [showCode, setShowCode] = useState(false);
   const [showWrite, setShowWrite] = useState(false);
   const [showRead, setShowRead] = useState(false);
   const [showAbi, setShowAbi] = useState(false);
+  const [isDeployed, setIsDeployed] = useState(false);
   const [showTransaction, setShowTransaction] = useState(true);
   const [contractData, setContractData] = useState([]);
   const [alternateContracts, setAlternateContract] = useState([]);
   const [contractInformation, setContractInformation] = useState({});
-  const [isDeployed, setIsDeployed] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const { data: signer } = useSigner();
   const contract = useContract({
@@ -108,7 +108,7 @@ const Address = () => {
         },
         {
           title: 'Current Chain',
-          value: chain,
+          value: chain.toUpperCase(),
         },
         {
           title: 'Balance',
@@ -173,12 +173,14 @@ const Address = () => {
                 title: singleChainData?.data?.name,
                 value: singleChainData?.data?.address,
               });
-
-              if (check.test(chain)) {
-                setIsDeployed(true);
-              }
             }
           }
+          const check = new RegExp(router.query.chain, 'gi');
+          otherChains.map((singleChain) => {
+            if (check.test(singleChain.title)) {
+              setIsDeployed(true);
+            }
+          });
           setContractData(data);
           setAlternateContract(otherChains);
           setContractInformation(contractRecord);
@@ -200,8 +202,6 @@ const Address = () => {
   }, [address, chain]);
 
   const showUmaAddresses = () => {};
-
-  console.log(alternateContracts);
 
   const showReadHandler = () => {
     setShowCode(false);

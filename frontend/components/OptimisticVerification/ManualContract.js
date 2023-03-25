@@ -52,6 +52,30 @@ const ManualContract = () => {
   const submitHandler = async () => {
     const contractId = randomstring.generate();
 
+    let data = '[';
+
+    for (let address of addresses) {
+      data =
+        data +
+        `{address: ${address.contractAddress}, chain: ${address.chain}},`;
+    }
+
+    data = data + ']';
+
+    let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
+
+    // if (chain?.id !== 5) {
+    //   console.log('here');
+    //   await window.ethereum.request({
+    //     method: 'wallet_switchEthereumChain',
+    //     params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
+    //   });
+    //   await contract?.assertTruth(ancillaryData, contractId);
+    // } else {
+    // }
+    console.log(contract);
+    await contract?.assertTruth(ancillaryData, contractId);
+
     const chainIds = [];
     for (let address of addresses) {
       const response = await createChainRecord(
@@ -74,29 +98,6 @@ const ManualContract = () => {
       true,
       false
     );
-
-    let data = '[';
-
-    for (let address of addresses) {
-      data =
-        data +
-        `{address: ${address.contractAddress}, chain: ${address.chain}},`;
-    }
-
-    data = data + ']';
-
-    let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
-
-    if (chain?.id !== 5) {
-      console.log('here');
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x5' }], // chainId must be in hexadecimal numbers
-      });
-      await contract?.assertTruth(ancillaryData, contractId);
-    } else {
-      await contract?.assertTruth(ancillaryData, contractId);
-    }
   };
 
   return (

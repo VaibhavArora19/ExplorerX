@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BsArrowDownShort, BsArrowRightShort } from 'react-icons/bs';
 import { useContractWrite, usePrepareContractWrite, useSigner} from 'wagmi'
 import { useRouter } from 'next/router';
+import WriteInput from './WriteInput';
 
 const WriteItem = ({ functionName, i, inputs, abi }) => {
   const [showWriteData, setShowWriteDate] = useState(false);
-  const [enteredInput, setEnteredInput] = useState({});
+  const [inputArray, setInputArray] = useState([]);
   const router = useRouter();
   const {data: signer} = useSigner();
   const {address} = router.query;
@@ -14,14 +15,23 @@ const WriteItem = ({ functionName, i, inputs, abi }) => {
     address: address,
     abi: abi,
     functionName: functionName,
+    args: inputArray
   })
   const { data, isLoading, isSuccess, write } = useContractWrite(config)
 
   const writeHandler = async (e) => {
     e.preventDefault();
 
-  write?.();
+    write?.();
   };
+
+  const inputHandler = (index, inputData) => {
+    const previousInput = inputArray;
+    previousInput[index] = inputData;
+
+    setInputArray(previousInput);
+
+  }
 
   return (
     <div className="bg-[#121212] rounded-md mt-4 select-none overflow-hidden cursor-pointer">
@@ -60,16 +70,7 @@ const WriteItem = ({ functionName, i, inputs, abi }) => {
             className="flex flex-col"
           >
             {inputs?.map((input, i) => (
-              <div key={i}>
-                <p className="text-sm text-gray-300 mb-1">{input.name}</p>
-                <input
-                  onChange={(e) => {
-                    setEnteredInput(e.target.value);
-                  }}
-                  placeholder={input.type}
-                  className="w-[400px] py-2 rounded-md px-2 mb-6 bg-[#2b2b2b] outline-none text-gray-400"
-                />
-              </div>
+              <WriteInput inputHandler={inputHandler} input={input} i={i}/>
             ))}
 
             <button

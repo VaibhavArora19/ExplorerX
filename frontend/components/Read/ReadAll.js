@@ -6,7 +6,6 @@ const ReadAll = ({ abi }) => {
   const nonInputArr = [];
 
   const parsedAbi = JSON.parse(abi);
-  console.log(parsedAbi);
 
   parsedAbi.filter((method) => {
     if (
@@ -34,15 +33,18 @@ const ReadAll = ({ abi }) => {
             value={item.outputs[0].name}
             datatype={item.outputs[0].type}
             inputs={item.inputs}
+            abi={parsedAbi}
           />
         </>
       ))}
 
       {inputArr.map((item, i) => (
         <ReadItem
+          abi={parsedAbi}
           functionName={item.name}
           inputs={item.inputs}
           inputName={item.name}
+          value={item.outputs[0].name}
         />
       ))}
     </div>

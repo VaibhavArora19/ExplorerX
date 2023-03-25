@@ -69,7 +69,7 @@ const DeployModal = ({
       return;
     }
     setGeneratingAddress(true);
-    computeAddress();
+    await computeAddress();
   };
 
 

@@ -3,7 +3,7 @@ import { Polybase } from "@polybase/client";
 
 const createDB = () => {
   const db = new Polybase({
-    defaultNamespace: "EXplorerX",
+    defaultNamespace: "EXPLORERX12",
   });
 
   return db;

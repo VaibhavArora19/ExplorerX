@@ -84,6 +84,8 @@ const Address = () => {
     abi: optimisticVerificationABI,
     signerOrProvider: signer,
   });
+  const [isSettled, setIsSettled] = useState(null);
+  const [differentAddress, setDifferentAddress] = useState(false);
 
   const { chain } = router.query;
 
@@ -181,6 +183,14 @@ const Address = () => {
               setIsDeployed(true);
             }
           });
+
+          if(contractRecord?.data?.isUMA === true && contractRecord?.data?.isSettled === false) {
+            console.log('here');
+            setIsSettled(false);
+          }else {
+            setIsSettled(true);
+          }
+          setDifferentAddress(true);
           setContractData(data);
           setAlternateContract(otherChains);
           setContractInformation(contractRecord);
@@ -264,17 +274,17 @@ const Address = () => {
             )}
 
             {/* {show if UMA boolean is true} */}
-            {/* {alternateContracts.length > 0 && (
+            {(alternateContracts.length > 0 && (differentAddress === true)) && (
               <Details
                 data={alternateContracts}
                 address={address}
                 heading="Deployed on other chains"
                 isAddress={true}
               />
-            )} */}
+            )}
 
             {/* {show if uma Boolean is false} */}
-            {alternateContracts.length > 0 && (
+            {(alternateContracts.length > 0 && differentAddress === false && isSettled === null) && (
               <Multichains alternateContracts={alternateContracts} />
             )}
           </div>

@@ -3,6 +3,7 @@ import { BsArrowDownShort, BsArrowRightShort } from 'react-icons/bs';
 import { useContractWrite, usePrepareContractWrite, useSigner} from 'wagmi'
 import { useRouter } from 'next/router';
 import WriteInput from './WriteInput';
+import { ethers } from 'ethers';
 
 const WriteItem = ({ functionName, i, inputs, abi }) => {
   const [showWriteData, setShowWriteDate] = useState(false);
@@ -22,7 +23,16 @@ const WriteItem = ({ functionName, i, inputs, abi }) => {
   const writeHandler = async (e) => {
     e.preventDefault();
     await ethereum.request({ method: 'eth_requestAccounts' });
+
+    
+    // const library = new ethers.providers.Web3Provider(window.ethereum);
+    // const getSigner = library.getSigner();
+
+    // const contract = new ethers.Contract(address, abi, getSigner);
+
+    // const fName = window[functionName];
     write?.();
+    // await contract?.[fName];
   };
 
   const inputHandler = (index, inputData) => {

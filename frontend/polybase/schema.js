@@ -3,7 +3,7 @@ const { Polybase } = require("@polybase/client");
 const createSchema = async () => {
 
 const db = new Polybase({
-    defaultNamespace: 'EXplorerX'
+    defaultNamespace: 'EXPLORERX12'
 });
 
 const createResponse = await db.applySchema(`

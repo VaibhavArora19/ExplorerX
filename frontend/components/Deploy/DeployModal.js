@@ -132,7 +132,6 @@ const DeployModal = ({
       }
       setStartDeploying(true);
       //this function will add all the formdata to polybase
-      addToPolybase();
       const abiCoder = new ethers.utils.AbiCoder();
       const saltbytes = abiCoder.encode(['uint256'], [salt]);
       console.log(saltbytes, 'saltbytes');
@@ -237,7 +236,7 @@ const DeployModal = ({
         }
       }
       await tx.wait();
-
+      addToPolybase();
       setDeploymentSuccess(true);
     } catch (err) {
       alert(err.message, 'DeployContract');

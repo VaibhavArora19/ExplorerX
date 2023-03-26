@@ -57,7 +57,7 @@ const ManualContract = () => {
 
     let ancillaryData = `Is the source code of all the contract addresses same: ${data}`;
 
-    await ethereum.request({ method: 'eth_requestAccounts' });
+    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
 
     const chainId = await ethereum.request({ method: "eth_chainId" });
 
@@ -73,7 +73,6 @@ const ManualContract = () => {
 
     const contract = new ethers.Contract(optimisticVerificationContract, optimisticVerificationABI, getSigner);
     await contract.assertTruth(ancillaryData, contractId);
-
     const chainIds = [];
     for (let address of addresses) {
       const response = await createChainRecord(
@@ -89,13 +88,15 @@ const ManualContract = () => {
       contractId,
       contractName,
       contractDescription,
-      address,
+      accounts[0],
       pastedContract,
       ABI,
       chainIds,
       true,
       false
     );
+
+    console.log(newContract)
   };
 
   return (

@@ -1,3 +1,4 @@
+import SearchModal from '@/components/Search/SearchModal';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -5,6 +6,8 @@ import { BsSearch } from 'react-icons/bs';
 
 const Explorer = () => {
   const [address, setAddress] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [chain, setChain] = useState('');
 
   const router = useRouter();
 
@@ -14,10 +17,20 @@ const Explorer = () => {
 
   const searchAddressHandler = (event) => {
     if (event.key === 'Enter') {
-      router.push({
-        pathname: `/address/${address}`,
-      });
+      setShowModal(true);
     }
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
+  };
+
+  const sendChain = (chain) => {
+    setChain({
+      chain: chain,
+      address: address,
+    });
+    router.push(`/address/${address}?chain=${chain.chainName}`)
   };
 
   return (
@@ -57,6 +70,14 @@ const Explorer = () => {
         height={200}
         className="absolute bottom-0 left-[50%] -translate-x-[50%]"
       />
+
+      {showModal && (
+        <SearchModal
+          sendData={sendChain}
+          onClose={closeModalHandler}
+          address={address}
+        />
+      )}
     </div>
   );
 };

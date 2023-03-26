@@ -3,6 +3,7 @@ import React from 'react';
 
 const Detail = ({ title, value, isAddress }) => {
   const router = useRouter();
+  console.log(title)
 
   return (
     <div className="flex py-4 hover:bg-[#1e1e1e] px-2 rounded-md text-[#efefef] ">
@@ -10,7 +11,7 @@ const Detail = ({ title, value, isAddress }) => {
       {isAddress ? (
         <p
           onClick={() => {
-            router.push(`/address/${value}`);
+            router.push(`/address/${value}?chain=${title.toLowerCase().split(' ')[0]}`);
           }}
           is
           className="flex-[0.7] cursor-pointer"
@@ -25,6 +26,7 @@ const Detail = ({ title, value, isAddress }) => {
           {value}
         </p>
       )}
+
     </div>
   );
 };

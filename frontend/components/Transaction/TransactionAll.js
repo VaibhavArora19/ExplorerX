@@ -3,7 +3,7 @@ import Transaction from './Transaction';
 import { useRouter } from 'next/router';
 import { getPolygonTransactions, getMantleTransactions, getOptimismTranasctions, getGnosisTransactions, getScrollTransactions, getzkSyncTransactions, getSepoliaTransactions } from "@/transactions/index"
 
-const menuBar = ['Txn Hash', 'Block', 'Method', 'From', 'To', 'Value'];
+const menuBar = ['Txn Hash', 'Block', 'Method Id', 'From', 'To', 'Value'];
 
 // const transactions = [
 //   {

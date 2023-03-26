@@ -68,16 +68,17 @@ const Address = () => {
   // const [showRead, setShowRead] = useState(false);
   // const [showAbi, setShowAbi] = useState(false);
 
-  const [showCode, setShowCode] = useState(false);
+  const [showCode, setShowCode] = useState(true);
   const [showWrite, setShowWrite] = useState(false);
   const [showRead, setShowRead] = useState(false);
   const [showAbi, setShowAbi] = useState(false);
   const [isDeployed, setIsDeployed] = useState(false);
-  const [showTransaction, setShowTransaction] = useState(true);
+  const [showTransaction, setShowTransaction] = useState(false);
   const [contractData, setContractData] = useState([]);
   const [alternateContracts, setAlternateContract] = useState([]);
   const [contractInformation, setContractInformation] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
   const { data: signer } = useSigner();
   const contract = useContract({
     address: optimisticVerificationContract,
@@ -184,10 +185,13 @@ const Address = () => {
             }
           });
 
-          if(contractRecord?.data?.isUMA === true && contractRecord?.data?.isSettled === false) {
+          if (
+            contractRecord?.data?.isUMA === true &&
+            contractRecord?.data?.isSettled === false
+          ) {
             console.log('here');
             setIsSettled(false);
-          }else {
+          } else {
             setIsSettled(true);
           }
           setDifferentAddress(true);
@@ -274,19 +278,23 @@ const Address = () => {
             )}
 
             {/* {show if UMA boolean is true} */}
-            {(alternateContracts.length > 0 && (differentAddress === true)) && (
-              <Details
-                data={alternateContracts}
-                address={address}
-                heading="Deployed on other chains"
-                isAddress={true}
-              />
+            {alternateContracts.length > 0 && differentAddress === true && (
+              <>
+                <Details
+                  data={alternateContracts}
+                  address={address}
+                  heading="Deployed on other chains"
+                  isAddress={true}
+                />
+              </>
             )}
 
             {/* {show if uma Boolean is false} */}
-            {(alternateContracts.length > 0 && differentAddress === false && isSettled === null) && (
-              <Multichains alternateContracts={alternateContracts} />
-            )}
+            {alternateContracts.length > 0 &&
+              differentAddress === false &&
+              isSettled === null && (
+                <Multichains alternateContracts={alternateContracts} />
+              )}
           </div>
 
           <div className="bg-[#171717] py-4 px-3 mx-8 mt-4 rounded-md">

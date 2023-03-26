@@ -19,6 +19,7 @@ import {
   optimisticVerificationABI,
 } from '@/constants';
 import Multichains from '@/components/Address/Multichains';
+import { BsInfo, BsInfoCircle } from 'react-icons/bs';
 
 const CONTRACT_DATA = [
   {
@@ -279,14 +280,30 @@ const Address = () => {
 
             {/* {show if UMA boolean is true} */}
             {alternateContracts.length > 0 && differentAddress === true && (
-              <>
+              <div className="flex-[0.5] ">
                 <Details
                   data={alternateContracts}
                   address={address}
                   heading="Deployed on other chains"
                   isAddress={true}
                 />
-              </>
+                {!isSettled && (
+                  <div className="flex justify-between items-center">
+                    <p className="text-yellow-400 flex items-center gap-3 ml-2 ">
+                      <BsInfoCircle /> The contract is not verified yet!
+                    </p>
+
+                    <button
+                      onClick={() => {
+                        // settle logic here
+                      }}
+                      className="py-1 px-4 rounded-md bg-yellow-600 text-white"
+                    >
+                      Settle
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
 
             {/* {show if uma Boolean is false} */}

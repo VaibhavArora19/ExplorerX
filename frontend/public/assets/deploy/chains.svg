@@ -1,18 +1,1 @@
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="18" cy="24" r="16" fill="#B8D0FF"/>
-<g filter="url(#filter0_d)">
-<circle cx="30" cy="24" r="16" fill="#246FFF"/>
-<circle cx="30" cy="24" r="15.5" stroke="white" stroke-opacity="0.01"/>
-</g>
-<defs>
-<filter id="filter0_d" x="12" y="6" width="36" height="36" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset/>
-<feGaussianBlur stdDeviation="1"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.141176 0 0 0 0 0.435294 0 0 0 0 1 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
-</filter>
-</defs>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 48 48"><circle cx="18" cy="24" r="16" fill="#B8D0FF"/><g filter="url(#filter0_d)"><circle cx="30" cy="24" r="16" fill="#246FFF"/><circle cx="30" cy="24" r="15.5" stroke="#fff" stroke-opacity=".01"/></g><defs><filter id="filter0_d" width="36" height="36" x="12" y="6" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" result="hardAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/><feOffset/><feGaussianBlur stdDeviation="1"/><feColorMatrix type="matrix" values="0 0 0 0 0.141176 0 0 0 0 0.435294 0 0 0 0 1 0 0 0 0.25 0"/><feBlend in2="BackgroundImageFix" mode="normal" result="effect1_dropShadow"/><feBlend in="SourceGraphic" in2="effect1_dropShadow" mode="normal" result="shape"/></filter></defs></svg>

@@ -1,17 +1,16 @@
 export const contractAddress = "0xEDbFce814BB0e816e2A18545262D8A32E32EDA43";
 export const gnosisAddress = "";
 export const connextDomains = {
-  "Optimism Goerli": 1735356532,
+  "Optimism Sepolia": 1936027759,
   "Polygon Mumbai": 9991,
 };
 export const rpcUrls = {
-  "Optimism Goerli": "https://goerli.optimism.io",
-  "Polygon Mumbai": "https://rpc-mumbai.maticvigil.com",
+  "Optimism Sepolia": "https://rpc.sepolia.optimism.io",
+  "Polygon Amoy": "https://rpc-amoy.polygon.technology",
   "Gnosis Chiado": "https://rpc.chiadochain.net",
-  "Scroll Testnet": "https://alpha-rpc.scroll.io/l2",
-  "FVM Hyperspace": "https://api.hyperspace.node.glif.io/rpc/v1",
-  "ZKSync Testnet": "https://zksync2-testnet.zksync.dev",
-  "Mantle Testnet": "https://rpc.testnet.mantle.xyz",
+  "Scroll Sepolia": "https://scroll-testnet-public.unifra.io",
+  "ZKSync Sepolia": "https://zksync-era-sepolia.blockpi.network/v1/rpc/public",
+  "Mantle Sepolia": "https://rpc.sepolia.mantle.xyz",
 };
 export const Mantle = {
   id: 5001,
@@ -30,231 +29,230 @@ export const Mantle = {
     default: { name: "Mantle", url: "https://explorer.testnet.mantle.xyz/" },
   },
 };
-export const optimisticVerificationContract =
-  "0x474891484CdA794b66AFcD6eD391336df4958DA7"; //goerli
+export const optimisticVerificationContract = "0x474891484CdA794b66AFcD6eD391336df4958DA7"; //goerli
 export const optimisticVerificationABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_claim",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_contractId",
-				"type": "string"
-			}
-		],
-		"name": "assertTruth",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_contractId",
-				"type": "string"
-			}
-		],
-		"name": "settleAndGetAssertionResultByContractId",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"name": "assertionIdByContractId",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "defaultIdentifier",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_contractId",
-				"type": "string"
-			}
-		],
-		"name": "getAssertionByContractId",
-		"outputs": [
-			{
-				"components": [
-					{
-						"components": [
-							{
-								"internalType": "bool",
-								"name": "arbitrateViaEscalationManager",
-								"type": "bool"
-							},
-							{
-								"internalType": "bool",
-								"name": "discardOracle",
-								"type": "bool"
-							},
-							{
-								"internalType": "bool",
-								"name": "validateDisputers",
-								"type": "bool"
-							},
-							{
-								"internalType": "address",
-								"name": "assertingCaller",
-								"type": "address"
-							},
-							{
-								"internalType": "address",
-								"name": "escalationManager",
-								"type": "address"
-							}
-						],
-						"internalType": "struct OptimisticOracleV3Interface.EscalationManagerSettings",
-						"name": "escalationManagerSettings",
-						"type": "tuple"
-					},
-					{
-						"internalType": "address",
-						"name": "asserter",
-						"type": "address"
-					},
-					{
-						"internalType": "uint64",
-						"name": "assertionTime",
-						"type": "uint64"
-					},
-					{
-						"internalType": "bool",
-						"name": "settled",
-						"type": "bool"
-					},
-					{
-						"internalType": "contract IERC20",
-						"name": "currency",
-						"type": "address"
-					},
-					{
-						"internalType": "uint64",
-						"name": "expirationTime",
-						"type": "uint64"
-					},
-					{
-						"internalType": "bool",
-						"name": "settlementResolution",
-						"type": "bool"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "domainId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "identifier",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "uint256",
-						"name": "bond",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "callbackRecipient",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "disputer",
-						"type": "address"
-					}
-				],
-				"internalType": "struct OptimisticOracleV3Interface.Assertion",
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_contractId",
-				"type": "string"
-			}
-		],
-		"name": "getAssertionId",
-		"outputs": [
-			{
-				"internalType": "bytes32",
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_contractId",
-				"type": "string"
-			}
-		],
-		"name": "getAssertionResultByContractId",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_claim",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_contractId",
+        type: "string",
+      },
+    ],
+    name: "assertTruth",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_contractId",
+        type: "string",
+      },
+    ],
+    name: "settleAndGetAssertionResultByContractId",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    name: "assertionIdByContractId",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "defaultIdentifier",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_contractId",
+        type: "string",
+      },
+    ],
+    name: "getAssertionByContractId",
+    outputs: [
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: "bool",
+                name: "arbitrateViaEscalationManager",
+                type: "bool",
+              },
+              {
+                internalType: "bool",
+                name: "discardOracle",
+                type: "bool",
+              },
+              {
+                internalType: "bool",
+                name: "validateDisputers",
+                type: "bool",
+              },
+              {
+                internalType: "address",
+                name: "assertingCaller",
+                type: "address",
+              },
+              {
+                internalType: "address",
+                name: "escalationManager",
+                type: "address",
+              },
+            ],
+            internalType: "struct OptimisticOracleV3Interface.EscalationManagerSettings",
+            name: "escalationManagerSettings",
+            type: "tuple",
+          },
+          {
+            internalType: "address",
+            name: "asserter",
+            type: "address",
+          },
+          {
+            internalType: "uint64",
+            name: "assertionTime",
+            type: "uint64",
+          },
+          {
+            internalType: "bool",
+            name: "settled",
+            type: "bool",
+          },
+          {
+            internalType: "contract IERC20",
+            name: "currency",
+            type: "address",
+          },
+          {
+            internalType: "uint64",
+            name: "expirationTime",
+            type: "uint64",
+          },
+          {
+            internalType: "bool",
+            name: "settlementResolution",
+            type: "bool",
+          },
+          {
+            internalType: "bytes32",
+            name: "domainId",
+            type: "bytes32",
+          },
+          {
+            internalType: "bytes32",
+            name: "identifier",
+            type: "bytes32",
+          },
+          {
+            internalType: "uint256",
+            name: "bond",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "callbackRecipient",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "disputer",
+            type: "address",
+          },
+        ],
+        internalType: "struct OptimisticOracleV3Interface.Assertion",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_contractId",
+        type: "string",
+      },
+    ],
+    name: "getAssertionId",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_contractId",
+        type: "string",
+      },
+    ],
+    name: "getAssertionResultByContractId",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+];
 export const deployerAbi = [
   {
     anonymous: false,

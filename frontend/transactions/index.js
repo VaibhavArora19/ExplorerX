@@ -1,6 +1,7 @@
 export const getPolygonTransactions = async (contractAddress) => {
   const data = await fetch(
-    `https://api-testnet.polygonscan.com/api?module=account&action=txlist&address=${contractAddress}&apikey=${process.env.NEXT_PUBLIC_POLYGON_MUMBAI_API_KEY}`
+    `	
+https://api-amoy.polygonscan.com/api?module=account&action=txlist&address=${contractAddress}&apikey=${process.env.NEXT_PUBLIC_POLYGON_MUMBAI_API_KEY}`
   );
   const response = await data.json();
 
@@ -10,7 +11,8 @@ export const getPolygonTransactions = async (contractAddress) => {
 //returns the source code of the smart contract if the smart contract is verified
 export const getPolygonSourceCode = async (contractAddress) => {
   const data = await fetch(`
-    https://api-testnet.polygonscan.com/api
+    	
+https://api-amoy.polygonscan.com/api
     ?module=contract
     &action=getsourcecode
     &address=${contractAddress}
@@ -25,7 +27,8 @@ export const getPolygonSourceCode = async (contractAddress) => {
 //returns the ABI of the smart contract
 export const getPolygonABI = async (contractAddress) => {
   const data = await fetch(`
-    https://api-testnet.polygonscan.com/api
+    	
+https://api-amoy.polygonscan.com/api
     ?module=contract
     &action=getabi
     &address=${contractAddress}
@@ -71,7 +74,7 @@ export const getGnosisABI = async (contractAddress) => {
 
 export const getOptimismTranasctions = async (contractAddress) => {
   const data = await fetch(`
-        https://api-goerli-optimism.etherscan.io/api?module=account&action=txlist&address=${contractAddress}&apikey=${process.env.NEXT_PUBLIC_OPTIMISM_API_KEY}
+        https://api-sepolia-optimism.etherscan.io/api?module=account&action=txlist&address=${contractAddress}&apikey=${process.env.NEXT_PUBLIC_OPTIMISM_API_KEY}
     `);
 
   const response = await data.json();
@@ -82,7 +85,7 @@ export const getOptimismTranasctions = async (contractAddress) => {
 //contract should be verified
 export const getOptimismSourceCode = async (contractAddress) => {
   const data = await fetch(`
-    https://api-goerli-optimism.etherscan.io/api
+    https://api-sepolia-optimism.etherscan.io/api
     ?module=contract
     &action=getsourcecode
     &address=${contractAddress}
@@ -97,7 +100,7 @@ export const getOptimismSourceCode = async (contractAddress) => {
 //contract should be verified
 export const getOptimismABI = async (contractAddress) => {
   const data = await fetch(`
-    https://api-goerli-optimism.etherscan.io/api
+    https://api-sepolia-optimism.etherscan.io/api
     ?module=contract
     &action=getabi
     &address=${contractAddress}
@@ -151,7 +154,8 @@ export const getSepoliaABI = async (contractAddress) => {
 
 export const getMantleTransactions = async (contractAddress) => {
   const data = await fetch(`
-    https://explorer.testnet.mantle.xyz/api?
+    	
+https://api-sepolia.mantlescan.xyz/api?
     module=account&action=txlist&address=${contractAddress}
     `);
 
@@ -163,7 +167,8 @@ export const getMantleTransactions = async (contractAddress) => {
 //contract should be verified
 export const getMantleSourceCode = async (contractAddress) => {
   const data = await fetch(`
-    https://explorer.testnet.mantle.xyz/api?
+    	
+https://api-sepolia.mantlescan.xyz/api?
     module=contract&action=getsourcecode&address=${contractAddress}
     `);
 
@@ -174,7 +179,8 @@ export const getMantleSourceCode = async (contractAddress) => {
 
 export const getMantleABI = async (contractAddress) => {
   const data = await fetch(`
-    https://explorer.testnet.mantle.xyz/api?
+    	
+https://api-sepolia.mantlescan.xyz/api?
     module=contract&action=getabi&address=${contractAddress}
     `);
 
@@ -196,7 +202,8 @@ export const getHyperspaceTransactions = async (contractAddress) => {
 
 export const getScrollTransactions = async (contractAddress) => {
   const data = await fetch(`
-    https://blockscout.scroll.io/api?module=account&action=txlist&address=${contractAddress}
+    	
+https://api-sepolia.scrollscan.com/api?module=account&action=txlist&address=${contractAddress}
     `);
 
   const response = await data.json();
@@ -207,7 +214,8 @@ export const getScrollTransactions = async (contractAddress) => {
 //contract should be verified
 export const getScrollABI = async (contractAddress) => {
   const data = await fetch(`
-        https://blockscout.scroll.io/api?
+        	
+https://api-sepolia.scrollscan.com/api?
         module=contract&action=getabi&address=${contractAddress}
     `);
 
@@ -217,8 +225,8 @@ export const getScrollABI = async (contractAddress) => {
 };
 
 export const getScrollSourceCode = async (contractAddress) => {
-  const data = await fetch(`
-        https://blockscout.scroll.io/api?
+  const data = await fetch(`   	
+https://api-sepolia.scrollscan.com/api?
         module=contract&action=getsourcecode&address=${contractAddress}
     `);
 
@@ -229,12 +237,10 @@ export const getScrollSourceCode = async (contractAddress) => {
 
 export const getzkSyncTransactions = async (contractAddress) => {
   const data = await fetch(`
-    https://goerli-api.zksync.io/api/v0.2/accounts/${contractAdress}/transactions?from=latest&limit=10&direction=older
+    https://sepolia-api.zksync.io/api/v0.2/accounts/${contractAdress}/transactions?from=latest&limit=10&direction=older
     `);
 };
 
-export const getzkSyncSourceCode = async (contractAddress) => {
-    
-};
+export const getzkSyncSourceCode = async (contractAddress) => {};
 
 export const getzkSyncABI = async (contractAddress) => {};

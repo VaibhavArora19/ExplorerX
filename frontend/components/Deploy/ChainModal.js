@@ -7,21 +7,17 @@ import zksyncImg from "../../public/assets/deploy/ZKsyncImg.png";
 import optimismImg from "../../public/assets/deploy/optimism.png";
 import fvmImg from "../../public/assets/deploy/fvm.png";
 import mantleImg from "../../public/assets/deploy/mantle.jpeg";
+import { useAccount, useChainId } from "wagmi";
 
 const Backdrop = ({ onClose }) => {
-  return (
-    <div
-      onClick={onClose}
-      className="top-0 left-0 fixed bg-black/20 backdrop-blur-md h-screen w-screen"
-    ></div>
-  );
+  return <div onClick={onClose} className="top-0 left-0 fixed bg-black/20 backdrop-blur-md h-screen w-screen"></div>;
 };
 
 const chains = [
   {
-    id: "80001",
+    id: "80002",
     chainImg: polygonSvg,
-    chainName: "Polygon Mumbai",
+    chainName: "Polygon Amoy",
   },
   {
     id: "10200",
@@ -29,43 +25,49 @@ const chains = [
     chainName: "Gnosis Chiado",
   },
   {
-    id: "534353",
+    id: "534351",
     chainImg: scrollImg,
-    chainName: "Scroll Testnet",
+    chainName: "Scroll Sepolia",
   },
   {
-    id: "420",
+    id: "11155420",
     chainImg: optimismImg,
-    chainName: "Optimism Goerli",
+    chainName: "Optimism Sepolia",
   },
   {
-    id: "3141",
-    chainImg: fvmImg,
-    chainName: "FVM Hyperspace",
-  },
-  {
-    id: "280",
+    id: "300",
     chainImg: zksyncImg,
-    chainName: "ZKSync Testnet",
+    chainName: "ZKSync Sepolia",
   },
   {
-    id: "5001",
+    id: "5003",
     chainImg: mantleImg,
-    chainName: "Mantle Testnet",
+    chainName: "Mantle Sepolia",
   },
 ];
 
 const ChainModal = ({ onClose, sendData }) => {
+  const chainId = useChainId();
   // const [chain, setChain] = useState(null)
 
-  const onClick = (chain) => {
+  const onClick = async (chain) => {
     const data = {
       chainName: chain.chainName,
       chainImg: chain.chainImg,
       chainId: chain.id,
     };
+
     sendData(data);
     onClose();
+
+    console.log("chains", chainId, data.chainId);
+    if (chainId !== +data.chainId) {
+      console.log("chains are not equal", { chainId: "0x" + Number(data.chainId).toString(16) });
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x" + Number(data.chainId).toString(16) }],
+      });
+    }
   };
 
   return (
@@ -77,16 +79,8 @@ const ChainModal = ({ onClose, sendData }) => {
         </div>
         <div className=" bg-[#151515] p-3 text-white flex flex-col gap-2 overflow-y-scroll max-h-[350px]">
           {chains.map((chain, i) => (
-            <div
-              onClick={() => onClick(chain)}
-              className="py-3 px-3 flex gap-4 hover:bg-[#323131] cursor-pointer rounded-xl"
-            >
-              <Image
-                src={chain.chainImg}
-                alt={chain.chainName}
-                width={40}
-                height={40}
-              />
+            <div onClick={() => onClick(chain)} className="py-3 px-3 flex gap-4 hover:bg-[#323131] cursor-pointer rounded-xl">
+              <Image src={chain.chainImg} alt={chain.chainName} width={40} height={40} />
               <div className="flex items-center">
                 <h3 className="font-semibold">{chain.chainName}</h3>
                 {/* <p className='text-[12px] tracking-wide text-gray-500'>{chain.chainAdd}</p> */}

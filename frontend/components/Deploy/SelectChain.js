@@ -8,20 +8,12 @@ import { useWeb3Modal } from "@web3modal/react";
 import { useAccount } from "wagmi";
 import { useNetwork, useSwitchNetwork } from "wagmi";
 
-import {
-  polygonMumbai,
-  scrollTestnet,
-  filecoinHyperspace,
-  gnosisChiado,
-  optimismGoerli,
-  zkSyncTestnet,
-} from "wagmi/chains";
-import { Mantle } from "@/constants";
+import { gnosisChiado } from "wagmi/chains";
+import { supportedChains } from "@/constants/chains";
 
 const SelectChain = ({ setPage, page, formData, setFormData }) => {
   const { chain: connectChain } = useNetwork();
-  const { chains, error, isLoading, pendingChainId, switchNetwork } =
-    useSwitchNetwork();
+  const { chains, error, isLoading, pendingChainId, switchNetwork } = useSwitchNetwork();
 
   const [isMultichain, setIsMultichain] = useState(false);
   const [isSinlgeChain, setIsSingleChain] = useState(false);
@@ -37,26 +29,24 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
 
   const connectWalletHandler = async () => {
     try {
-      if (chain.chainName === "Polygon Mumbai") {
-        setDefaultChain(polygonMumbai);
+      if (chain.chainName === "Polygon Amoy") {
+        setDefaultChain(supportedChains[4]);
       }
-      if (chain.chainName === "Scroll Testnet") {
-        setDefaultChain(scrollTestnet);
+      if (chain.chainName === "Scroll Sepolia") {
+        setDefaultChain(supportedChains[0]);
       }
-      if (chain.chainName === "FVM Hyperspace") {
-        setDefaultChain(filecoinHyperspace);
-      }
+
       if (chain.chainName === "Gnosis Chiado") {
         setDefaultChain(gnosisChiado);
       }
-      if (chain.chainName === "Optimism Goerli") {
-        setDefaultChain(optimismGoerli);
+      if (chain.chainName === "Optimism Sepolia") {
+        setDefaultChain(supportedChains[2]);
       }
-      if (chain.chainName === "ZKSync Testnet") {
-        setDefaultChain(zkSyncTestnet);
+      if (chain.chainName === "ZKSync Sepolia") {
+        setDefaultChain(supportedChains[3]);
       }
-      if (chain.chainName === "Mantle Testnet") {
-        setDefaultChain(Mantle);
+      if (chain.chainName === "Mantle Sepolia") {
+        setDefaultChain(supportedChains[1]);
       }
       await open();
     } catch (err) {
@@ -126,17 +116,10 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
         >
           <div className="flex gap-2">
             {chain.chainImg != "" && (
-              <Image
-                src={!chain.length ? chain.chainImg : polygonSvg}
-                alt={!chain.length ? chain.chainName : "Chain"}
-                width={40}
-                height={40}
-              />
+              <Image src={!chain.length ? chain.chainImg : polygonSvg} alt={!chain.length ? chain.chainName : "Chain"} width={40} height={40} />
             )}
             <div className="flex items-center">
-              <h3 className="font-semibold ml-2">
-                {chain.chainName != "" ? chain.chainName : "Select chain"}
-              </h3>
+              <h3 className="font-semibold ml-2">{chain.chainName != "" ? chain.chainName : "Select chain"}</h3>
               {/* <p className="text-[12px] tracking-wide text-gray-500">
                 {!chain.length ? chain.chainAdd : "0x00000000000000000000000"}
               </p> */}
@@ -154,74 +137,41 @@ const SelectChain = ({ setPage, page, formData, setFormData }) => {
         <div className="flex gap-4">
           <div
             onClick={singleChainHandler}
-            className={` ${
-              isSinlgeChain ? "bg-[#22335F]" : "bg-[#363636]"
-            }  p-10 rounded-xl flex-[0.5] cursor-pointer`}
+            className={` ${isSinlgeChain ? "bg-[#22335F]" : "bg-[#363636]"}  p-10 rounded-xl flex-[0.5] cursor-pointer`}
           >
             <div className="bg-[#171717] rounded-md p-4 w-fit mb-7">
-              <GiBreakingChain
-                className={`${isSinlgeChain && "text-blue-300"}`}
-                size={20}
-              />
+              <GiBreakingChain className={`${isSinlgeChain && "text-blue-300"}`} size={20} />
             </div>
 
-            <p className={`${isSinlgeChain && "text-blue-300 "} font-medium`}>
-              Single Chain
-            </p>
+            <p className={`${isSinlgeChain && "text-blue-300 "} font-medium`}>Single Chain</p>
           </div>
 
-          <div
-            onClick={multichainHandler}
-            className={` ${
-              isMultichain ? "bg-[#1F423A]" : "bg-[#363636]"
-            } p-10 rounded-xl flex-[0.5] cursor-pointer`}
-          >
+          <div onClick={multichainHandler} className={` ${isMultichain ? "bg-[#1F423A]" : "bg-[#363636]"} p-10 rounded-xl flex-[0.5] cursor-pointer`}>
             <div className="bg-[#171717] rounded-md p-4 w-fit mb-7">
-              <GiBreakingChain
-                size={20}
-                className={`${isMultichain ? "text-green-400" : ""}`}
-              />
+              <GiBreakingChain size={20} className={`${isMultichain ? "text-green-400" : ""}`} />
             </div>
-            <p
-              className={`${isMultichain ? "text-green-400" : ""} font-medium`}
-            >
-              Multi Chain
-            </p>
+            <p className={`${isMultichain ? "text-green-400" : ""} font-medium`}>Multi Chain</p>
           </div>
         </div>
 
         <div className="flex justify-between mt-6">
-          <button
-            onClick={previousPageHandler}
-            type="button"
-            className="py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600"
-          >
+          <button onClick={previousPageHandler} type="button" className="py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600">
             Back
           </button>
 
           {!isConnected ? (
-            <button
-              onClick={connectWalletHandler}
-              type="button"
-              className="py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600"
-            >
+            <button onClick={connectWalletHandler} type="button" className="py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600">
               Connect Wallet
             </button>
           ) : (
-            <button
-              onClick={nextPageHandler}
-              type="button"
-              className="py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600"
-            >
+            <button onClick={nextPageHandler} type="button" className="py-3 px-7 rounded-md bg-[#292929] text-gray-300 border border-gray-600">
               Next
             </button>
           )}
         </div>
       </form>
 
-      {openModal && (
-        <ChainModal sendData={sendChain} onClose={closeModalHandler} />
-      )}
+      {openModal && <ChainModal sendData={sendChain} onClose={closeModalHandler} />}
     </div>
   );
 };

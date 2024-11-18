@@ -10,9 +10,9 @@ import mantleImg from "../../public/assets/deploy/mantle.jpeg";
 
 const chains = [
   {
-    id: "80001",
+    id: "80002",
     chainImg: polygonSvg,
-    chainName: "Polygon Mumbai",
+    chainName: "Polygon Amoy",
   },
   {
     id: "10200",
@@ -20,29 +20,24 @@ const chains = [
     chainName: "Gnosis Chiado",
   },
   {
-    id: "534353",
+    id: "534351",
     chainImg: scrollImg,
-    chainName: "Scroll Testnet",
+    chainName: "Scroll Sepolia",
   },
   {
-    id: "420",
+    id: "11155420",
     chainImg: optimismImg,
-    chainName: "Optimism Goerli",
+    chainName: "Optimism Sepolia",
   },
   {
-    id: "3141",
-    chainImg: fvmImg,
-    chainName: "FVM Hyperspace",
-  },
-  {
-    id: "280",
+    id: "300",
     chainImg: zksyncImg,
-    chainName: "ZKSync Testnet",
+    chainName: "ZKSync Sepolia",
   },
   {
-    id: "5001",
+    id: "5003",
     chainImg: mantleImg,
-    chainName: "Mantle Testnet",
+    chainName: "Mantle Sepolia",
   },
 ];
 
@@ -79,9 +74,7 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
 
         <div className="flex flex-wrap justify-between gap-5">
           {chains.map((chain, index) => {
-            let isChainSelected =
-              chainSelected.findIndex((c) => c.chainName === chain.chainName) >=
-              0;
+            let isChainSelected = chainSelected.findIndex((c) => c.chainName === chain.chainName) >= 0;
             if (chain.chainName !== formData.currentDeployChain.chainName)
               return (
                 <div
@@ -92,12 +85,7 @@ const MultiChain = ({ formData, setFormData, page, setPage }) => {
                     isChainSelected && `bg-[#323131]`
                   }`}
                 >
-                  <Image
-                    src={chain.chainImg}
-                    alt={chain.chainName}
-                    width={40}
-                    height={40}
-                  />
+                  <Image src={chain.chainImg} alt={chain.chainName} width={40} height={40} />
                   <div>
                     <h3 className="font-semibold">{chain.chainName}</h3>
                     {/* <p className="text-[12px] tracking-wide text-gray-500">
